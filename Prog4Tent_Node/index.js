@@ -10,7 +10,7 @@
  app.set('PORT', config.webPort);
 
  app.get('/', function (request, response) {
-     response.send('Hello from the root')
+     response.send('Prog4Tent_Node')
  });
 
  app.all('*', function(request, response, next) {
