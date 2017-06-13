@@ -10,7 +10,7 @@ var bcrypt = require('bcrypt');
 
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.urlencoded({extended: true}));
 
 var path = require('path');
 var pool = require('../db/db_connector');
@@ -41,7 +41,7 @@ function decodeToken(token, cb) {
     }
 }
 
-router.post('/login', function(req, res) {
+router.post('/login', function (req, res) {
 
     var username = req.body.username || '';
     var password = req.body.password || '';
@@ -51,76 +51,88 @@ router.post('/login', function(req, res) {
 
         pool.getConnection(function (err, connection) {
             if (err) {
-                throw err
-            }
-            connection.query(query_str, function (err, rows, fields) {
-                connection.release();
-                if (err) {
-                    throw err
-                }
+                console.log(err);
+                res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            } else {
+                connection.query(query_str, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        console.log(err);
+                        res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                    }
 
-                if (rows[0]) {
-                    if (rows[0].hasOwnProperty('username') && rows[0].hasOwnProperty('password')) {
-                        var hash = rows[0].password;
-                        if (bcrypt.compareSync(password, hash)){
-                            res.status(200).json({"username":username,"token":encodeToken(username)});
+                    if (rows[0]) {
+                        if (rows[0].hasOwnProperty('username') && rows[0].hasOwnProperty('password')) {
+                            var hash = rows[0].password;
+                            if (bcrypt.compareSync(password, hash)) {
+                                res.status(200).json({"username": username, "token": encodeToken(username)});
+                            } else {
+                                res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
+                            }
                         } else {
-                            res.json({error: "Invalid password"});
+                            res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
                         }
                     } else {
-                        res.json({error: "Invalid username and/or password"});
+                        res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
                     }
-                } else {
-                    res.json({error: "Invalid username and/or password"});
-                }
 
-            });
+                });
+            }
         });
     } else {
-        res.json({error: "Invalid username and/or password"});
+        res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
     }
 
 });
 
-router.post('/register', function(req, res){
+router.post('/register', function (req, res) {
     var body = req.body;
 
-    var createDate = moment().format('YYYY-MM-DD HH:MM:SS');
-    var hash = bcrypt.hashSync(body.password, 10);
+    if (body.username !== "" && body.password !== "") {
 
-    var query_str = {
-        sql: 'INSERT INTO `customer`(store_id, first_name, last_name, email, address_id, create_date, username, password) VALUES (?,?,?,?,?,?,?,?)',
-        values: [body.storeId, body.firstName, body.lastName, body.email, body.addressId, createDate, body.username, hash],
-        timeout: 2000
-    };
+        var createDate = moment().format('YYYY-MM-DD HH:MM:SS');
+        var hash = bcrypt.hashSync(body.password, 10);
 
-    pool.getConnection(function (err, connection) {
-        if (err) {
-            throw err
-        }
-        connection.query(query_str, function (err, rows, fields) {
-            connection.release();
+        var query_str = {
+            sql: 'INSERT INTO `customer`(store_id, first_name, last_name, email, address_id, create_date, username, password) VALUES (?,?,?,?,?,?,?,?)',
+            values: [body.storeId, body.firstName, body.lastName, body.email, body.addressId, createDate, body.username, hash],
+            timeout: 2000
+        };
+
+        pool.getConnection(function (err, connection) {
             if (err) {
                 console.log(err);
+                res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            } else {
+                connection.query(query_str, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        console.log(err);
+                        res.status((err.status || 500 )).json({error: new Error("Internal Server Error - username may already be in use").message});
+                    }
+                    res.status(200).json(rows);
+                });
             }
-            res.status(200).json(rows);
         });
-    });
+
+    } else {
+        res.status(400).json({error: new Error("Invalid username and/or password").message});
+    }
 
 });
 
-router.get('/films?offset=:start&count=:number', function(req, res){
+router.get('/films?offset=:start&count=:number', function (req, res) {
 });
 
-router.get('/films/:filmid', function(req, res){
+router.get('/films/:filmid', function (req, res) {
 });
 
-router.all('*', function(req, res, next){
+router.all('*', function (req, res, next) {
     var token = (req.header('X-Access-Token')) || '';
 
     decodeToken(token, function (err, payload) {
         if (err) {
-            console.log('Error handler: ' + err.message);
+            console.log(err);
             res.status((err.status || 401 )).json({error: new Error("Not authorised").message});
         } else {
             next();
@@ -128,16 +140,16 @@ router.all('*', function(req, res, next){
     });
 });
 
-router.get('/rentals/:userid', function(req, res){
+router.get('/rentals/:userid', function (req, res) {
 });
 
-router.post('/rentals/:userid/:inventoryid', function(req, res){
+router.post('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
-router.put('/rentals/:userid/:inventoryid', function(req, res){
+router.put('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
-router.delete('/rentals/:userid/:inventoryid', function(req, res){
+router.delete('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
 module.exports = router;
