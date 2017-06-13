@@ -87,14 +87,14 @@ router.post('/login', function(req, res) {
 });
 
 router.post('/register', function(req, res){
-    var username = req.body.username;
-    var password = req.body.password;
+    var body = req.body;
 
-    var hash = bcrypt.hashSync(password, 10);
+    var createDate = moment().format('YYYY-MM-DD HH:MM:SS');
+    var hash = bcrypt.hashSync(body.password, 10);
 
     var query_str = {
-        sql: 'INSERT INTO `users`(username, password) VALUES (?,?)',
-        values: [username, hash],
+        sql: 'INSERT INTO `customer`(store_id, first_name, last_name, email, address_id, create_date, username, password) VALUES (?,?,?,?,?,?,?,?)',
+        values: [body.storeId, body.firstName, body.lastName, body.email, body.addressId, createDate, body.username, hash],
         timeout: 2000
     };
 

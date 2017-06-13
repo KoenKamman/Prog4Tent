@@ -1,8 +1,8 @@
 {
-  "secretkey" : "",
-  "dbUsername" : "",
-  "dbPassword" : "",
-  "dbSchema" : "",
-  "dbServer" : "",
-  "webPort" : ""
+  "secretkey" : "9588a024ffedf1ab2d3fd4b0bcfe3810a7c8b1f5a0417495d8911ab678be9172",
+  "dbUsername" : "test",
+  "dbPassword" : "testing",
+  "dbSchema" : "prog4test",
+  "dbServer" : "localhost",
+  "webPort" : "8080"
 }
