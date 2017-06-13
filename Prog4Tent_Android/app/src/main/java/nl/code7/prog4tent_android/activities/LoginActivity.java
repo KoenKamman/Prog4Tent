@@ -1,4 +1,4 @@
-package nl.code7.prog4tent_android.activity;
+package nl.code7.prog4tent_android.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -24,47 +24,47 @@ import java.util.Map;
 import nl.code7.prog4tent_android.R;
 
 /**
- * A login screen that offers login via username/password.
+ * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity{
 
 
-    private static final String TAG = CityActivity.class.getName();
+    private static final String TAG = FilmActivity.class.getName();
 
     // UI references.
-    private AutoCompleteTextView mUsernameView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private AutoCompleteTextView emailView;
+    private EditText passwordView;
+    private View progressView;
+    private View loginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username_EditText);
-        mPasswordView = (EditText) findViewById(R.id.password_EditText);
+        emailView = (AutoCompleteTextView) findViewById(R.id.email_EditText);
+        passwordView = (EditText) findViewById(R.id.password_EditText);
 
         Button signInButton = (Button) findViewById(R.id.sign_in_Button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Store values at the time of the login attempt.
-                String username = mUsernameView.getText().toString();
-                String password = mPasswordView.getText().toString();
+                String email = emailView.getText().toString();
+                String password = passwordView.getText().toString();
 
-                volleyLogin(username, password);
+                volleyLogin(email, password);
 
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        loginFormView = findViewById(R.id.login_form);
+        progressView = findViewById(R.id.login_progress);
     }
 
     public void volleyLogin(String u, String p) {
 
-        final String username = u;
+        final String email = u;
         final String password = p;
 
         // Instantiate the RequestQueue.
@@ -85,8 +85,8 @@ public class LoginActivity extends AppCompatActivity{
                             Log.i(TAG, "Response: " + response);
 
                             //Start activity and put response/token in extras
-                            Intent i = new Intent(getApplicationContext(), CityActivity.class);
-                            i.putExtra("USERNAME", mUsernameView.getEditableText().toString());
+                            Intent i = new Intent(getApplicationContext(), FilmActivity.class);
+                            i.putExtra("EMAIL", emailView.getEditableText().toString());
                             String token = response.replaceAll("^\"|\"$", "");
                             i.putExtra("TOKEN", token);
                             startActivity(i);
@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public byte[] getBody() throws AuthFailureError {
 
-                String mContent = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+                String mContent = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
                 byte[] body = new byte[0];
                 try {
                     body = mContent.getBytes("UTF-8");

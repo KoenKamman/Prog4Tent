@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.code7.prog4tent_android.activity.FilmNewActivity">
+    tools:context="nl.code7.prog4tent_android.activities.FilmNewActivity">
 
 </android.support.constraint.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.domain.Film;
 
 /**
@@ -26,10 +27,10 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         Film film= getItem(position);
 
         if (convertview == null){
-            convertview = LayoutInflater.from(getContext()).inflate(R.layout.film_listitem, parent, false);
+            convertview = LayoutInflater.from(getContext()).inflate(R.layout.activity_film_list_item, parent, false);
         }
 
-        TextView filmName = (TextView) convertview.findViewById(R.id.name_TextView);
+        TextView filmName = (TextView) convertview.findViewById(R.id.film_item_TextView);
         filmName.setText(film.getName());
 
         return convertview;

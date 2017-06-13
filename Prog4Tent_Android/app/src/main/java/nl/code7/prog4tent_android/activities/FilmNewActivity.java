@@ -1,4 +1,4 @@
-package nl.code7.prog4tent_android.activity;
+package nl.code7.prog4tent_android.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

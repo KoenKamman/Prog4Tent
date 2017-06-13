@@ -23,11 +23,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".activity.FilmActivity" />
-        <activity android:name=".activity.FilmDetailActivity" />
-        <activity android:name=".activity.FilmNewActivity"></activity>
+        <activity android:name=".activities.FilmActivity" />
+        <activity android:name=".activities.FilmDetailActivity" />
+        <activity android:name=".activities.FilmNewActivity" />
+        <activity android:name=".film_list_item"></activity>
     </application>
 
 </manifest>
