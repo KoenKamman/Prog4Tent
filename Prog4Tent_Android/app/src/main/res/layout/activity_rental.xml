@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="nl.code7.prog4tent_android.activities.FilmActivity">
+    tools:context="nl.code7.prog4tent_android.activities.RentalActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="rental" />
 
     <ListView
-        android:id="@+id/film_ListView"
+        android:id="@+id/rental_ListView"
         android:layout_width="368dp"
         android:layout_height="551dp"
         tools:layout_editor_absoluteX="8dp"
