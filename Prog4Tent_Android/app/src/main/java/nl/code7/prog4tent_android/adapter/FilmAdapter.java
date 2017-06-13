@@ -31,7 +31,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         }
 
         TextView filmName = (TextView) convertview.findViewById(R.id.film_item_TextView);
-        filmName.setText(film.getName());
+        filmName.setText(film.getTitle());
 
         return convertview;
 
