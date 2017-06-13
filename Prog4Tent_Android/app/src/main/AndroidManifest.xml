@@ -29,12 +29,7 @@
         <activity android:name=".activities.FilmDetailActivity" />
         <activity android:name=".activities.FilmNewActivity" />
         <activity android:name=".film_list_item" />
-        <activity android:name=".activities.RegistrationActivity" />
-        <activity
-            android:name=".activities.MenuActivity"
-            android:label="@string/title_activity_menu"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activities.RentalActivity"></activity>
+        <activity android:name=".activities.RegistrationActivity"></activity>
     </application>
 
 </manifest>

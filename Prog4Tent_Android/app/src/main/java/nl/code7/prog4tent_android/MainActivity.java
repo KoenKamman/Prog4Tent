@@ -1,18 +1,18 @@
 package nl.code7.prog4tent_android;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import nl.code7.prog4tent_android.activities.FilmActivity;
-import nl.code7.prog4tent_android.activities.MenuActivity;
+import nl.code7.prog4tent_android.activities.LoginActivity;
 
-public class MainActivity extends MenuActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-        Intent i = new Intent(getApplicationContext(), FilmActivity.class);
+        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
     }
 }

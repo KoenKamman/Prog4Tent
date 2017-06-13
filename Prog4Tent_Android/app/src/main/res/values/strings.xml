@@ -13,6 +13,8 @@
     <string name="title_activity_login">LoginActivity</string>
 
 
+
+
     <string name="id">ID</string>
     <string name="name">Name</string>
     <string name="countryCode">Country Code</string>
@@ -22,10 +24,4 @@
     <string name="delete">Delete city</string>
     <string name="add">Add new city</string>
     <string name="edit">Edit city</string>
-    <string name="title_activity_menu">MenuActivity</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
 </resources>
