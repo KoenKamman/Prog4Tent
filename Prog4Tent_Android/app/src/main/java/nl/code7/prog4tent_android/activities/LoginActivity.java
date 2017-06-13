@@ -41,10 +41,12 @@ public class LoginActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
+
+        // Login form
         emailView = (AutoCompleteTextView) findViewById(R.id.email_EditText);
         passwordView = (EditText) findViewById(R.id.password_EditText);
 
+        // Login with existing account
         Button signInButton = (Button) findViewById(R.id.sign_in_Button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +62,16 @@ public class LoginActivity extends AppCompatActivity{
 
         loginFormView = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
+
+        // Register new account
+        Button registerBtn = (Button)findViewById(R.id.register_Button);
+        registerBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent i = new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public void volleyLogin(String u, String p) {

@@ -28,7 +28,8 @@
         <activity android:name=".activities.FilmActivity" />
         <activity android:name=".activities.FilmDetailActivity" />
         <activity android:name=".activities.FilmNewActivity" />
-        <activity android:name=".film_list_item"></activity>
+        <activity android:name=".film_list_item" />
+        <activity android:name=".activities.RegistrationActivity"></activity>
     </application>
 
 </manifest>
