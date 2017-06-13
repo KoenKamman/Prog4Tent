@@ -47,11 +47,7 @@ router.post('/login', function(req, res) {
     var password = req.body.password || '';
 
     if (username && password) {
-        var query_str = {
-            sql: 'SELECT * FROM users WHERE username = "?";',
-            values: [username],
-            timeout: 2000
-        };
+        var query_str = 'SELECT username, password FROM customer WHERE username = "' + username + '";';
 
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -67,7 +63,7 @@ router.post('/login', function(req, res) {
                     if (rows[0].hasOwnProperty('username') && rows[0].hasOwnProperty('password')) {
                         var hash = rows[0].password;
                         if (bcrypt.compareSync(password, hash)){
-                            res.status(200).json(encodeToken(username));
+                            res.status(200).json({"username":username,"token":encodeToken(username)});
                         } else {
                             res.json({error: "Invalid password"});
                         }
