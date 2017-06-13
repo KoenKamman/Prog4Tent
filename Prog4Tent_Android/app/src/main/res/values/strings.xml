@@ -22,4 +22,6 @@
     <string name="delete">Delete city</string>
     <string name="add">Add new city</string>
     <string name="edit">Edit city</string>
+    <string name="title_activity_test">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
 </resources>
