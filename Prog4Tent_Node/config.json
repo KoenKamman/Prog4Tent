@@ -1,0 +1,8 @@
+{
+  "secretkey" : "",
+  "dbUsername" : "",
+  "dbPassword" : "",
+  "dbSchema" : "",
+  "dbServer" : "",
+  "webPort" : ""
+}
