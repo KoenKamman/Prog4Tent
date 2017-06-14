@@ -140,7 +140,25 @@ router.all('*', function (req, res, next) {
     });
 });
 
-router.get('/rentals/:userid', function (req, res) {
+router.get('/rentals/:userId', function (req, res) {
+    var userId = req.params.userId;
+
+    var query_str = 'SELECT * FROM rental WHERE customer_id =' + userId;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log(err);
+            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+            }
+            res.status(200).json(rows);
+        });
+    });
 });
 
 router.post('/rentals/:userid/:inventoryid', function (req, res) {
