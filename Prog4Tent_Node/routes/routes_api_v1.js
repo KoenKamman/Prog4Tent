@@ -16,6 +16,7 @@ var path = require('path');
 var pool = require('../db/db_connector');
 var config = require('../config.json');
 
+//Create a token
 function encodeToken(username) {
     const payload = {
         exp: moment().add(10, 'days').unix(),
@@ -25,6 +26,7 @@ function encodeToken(username) {
     return jwt.encode(payload, config.secretkey);
 }
 
+//Check if token has expired
 function decodeToken(token, cb) {
 
     try {
@@ -41,6 +43,7 @@ function decodeToken(token, cb) {
     }
 }
 
+//Logging in with a valid username and password returns a token
 router.post('/login', function (req, res) {
 
     var username = req.body.username || '';
@@ -85,6 +88,7 @@ router.post('/login', function (req, res) {
 
 });
 
+//Register a new user
 router.post('/register', function (req, res) {
     var body = req.body;
 
@@ -121,12 +125,13 @@ router.post('/register', function (req, res) {
 
 });
 
+//Returns film info of multiple films by film_id
 router.get('/films', function (req, res) {
     var offset = req.query.offset;
     var count = req.query.count;
 
     var query_str;
-    query_str = 'SELECT * FROM film ORDER BY film_id LIMIT '+ count +' OFFSET '+ offset + ';';
+    query_str = 'SELECT * FROM film ORDER BY film_id LIMIT ' + count + ' OFFSET ' + offset + ';';
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
@@ -143,6 +148,7 @@ router.get('/films', function (req, res) {
     });
 });
 
+//Returns info about a specific film
 router.get('/films/:filmid', function (req, res) {
     var id = req.params.filmid;
 
@@ -168,6 +174,8 @@ router.get('/films/:filmid', function (req, res) {
     });
 });
 
+//The following routes require a token, the previous ones do not
+//Check for authentication token
 router.all('*', function (req, res, next) {
     var token = (req.header('X-Access-Token')) || '';
 
@@ -181,8 +189,9 @@ router.all('*', function (req, res, next) {
     });
 });
 
-router.get('/rentals/:userId', function (req, res) {
-    var userId = req.params.userId;
+//Returns rentals for a specific user
+router.get('/rentals/:userid', function (req, res) {
+    var userId = req.params.userid;
 
     var query_str = 'SELECT * FROM rental WHERE customer_id =' + userId;
 
@@ -202,12 +211,71 @@ router.get('/rentals/:userId', function (req, res) {
     });
 });
 
+//Creates a new rental entry for a specific user
 router.post('/rentals/:userid/:inventoryid', function (req, res) {
+    var userId = req.params.userid;
+    var inventoryId = req.params.inventoryid;
+
+    var staffId = req.body.staffId || 0;
+
+    var rentalDate = moment().format('YYYY-MM-DD HH:MM:SS');
+    var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:MM:SS');
+
+    var query_str = {
+        sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date, staff_id) VALUES (?,?,?,?,?);',
+        values: [rentalDate, inventoryId, userId, returnDate, staffId],
+        timeout: 2000
+    };
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log(err);
+            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+            }
+            res.status(200).json(rows);
+        });
+    });
+
 });
 
+//Updates rental entry for a specific user
 router.put('/rentals/:userid/:inventoryid', function (req, res) {
+    var userId = req.params.userid;
+    var inventoryId = req.params.inventoryid;
+
+    var staffId = req.body.staffId || 'staff_id';
+    var rentalDate = req.body.rentalDate || 'rental_date';
+    var returnDate = req.body.returnDate || 'return_date';
+
+    var query_str = {
+        sql: 'UPDATE `rental` SET rental_date = ?, return_date = ?, staff_id = ? WHERE customer_id = ? AND inventory_id = ?;',
+        values: [rentalDate, returnDate, staffId, userId, inventoryId],
+        timeout: 2000
+    };
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log(err);
+            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+            }
+            res.status(200).json(rows);
+        });
+    });
 });
 
+//Deletes a rental entry for a specific user
 router.delete('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
