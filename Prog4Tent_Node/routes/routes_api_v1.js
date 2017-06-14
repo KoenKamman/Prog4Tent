@@ -254,6 +254,7 @@ router.put('/rentals/:userid/:inventoryid', function (req, res) {
     var userId = req.params.userid;
     var inventoryId = req.params.inventoryid;
 
+    //TODO: Change default values
     var staffId = req.body.staffId || 'staff_id';
     var rentalDate = req.body.rentalDate || 'rental_date';
     var returnDate = req.body.returnDate || 'return_date';
@@ -282,6 +283,27 @@ router.put('/rentals/:userid/:inventoryid', function (req, res) {
 
 //Deletes a rental entry for a specific user
 router.delete('/rentals/:userid/:inventoryid', function (req, res) {
+    var userId = req.params.userid;
+    var inventoryId = req.params.inventoryid;
+
+    var query_str = {
+        sql: 'DELETE FROM rental WHERE customer_id = ? AND inventory_id = ?;',
+        values: [userId, inventoryId],
+        timeout: 2000
+    };
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            throw err
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                throw err
+            }
+            res.status(200).json(rows);
+        });
+    });
 });
 
 module.exports = router;
