@@ -27,7 +27,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         Film film= getItem(position);
 
         if (convertview == null){
-            convertview = LayoutInflater.from(getContext()).inflate(R.layout.activity_film_list_item, parent, false);
+            convertview = LayoutInflater.from(getContext()).inflate(R.layout.listview_film_item_row, parent, false);
         }
 
         TextView filmName = (TextView) convertview.findViewById(R.id.film_item_TextView);

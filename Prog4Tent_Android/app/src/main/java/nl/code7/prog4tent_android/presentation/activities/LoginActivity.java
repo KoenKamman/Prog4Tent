@@ -1,4 +1,4 @@
-package nl.code7.prog4tent_android.activities;
+package nl.code7.prog4tent_android.presentation.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import nl.code7.prog4tent_android.R;
+import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 
 /**
  * A login screen that offers login via email/password.
@@ -29,7 +30,7 @@ import nl.code7.prog4tent_android.R;
 public class LoginActivity extends AppCompatActivity{
 
 
-    private static final String TAG = FilmActivity.class.getName();
+    private static final String TAG = FilmFragment.class.getName();
 
     // UI references.
     private AutoCompleteTextView emailView;
@@ -97,7 +98,7 @@ public class LoginActivity extends AppCompatActivity{
                             Log.i(TAG, "Response: " + response);
 
                             //Start activity and put response/token in extras
-                            Intent i = new Intent(getApplicationContext(), FilmActivity.class);
+                            Intent i = new Intent(getApplicationContext(), FilmFragment.class);
                             i.putExtra("EMAIL", emailView.getEditableText().toString());
                             String token = response.replaceAll("^\"|\"$", "");
                             i.putExtra("TOKEN", token);

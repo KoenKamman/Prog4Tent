@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import nl.code7.prog4tent_android.activities.LoginActivity;
+import nl.code7.prog4tent_android.presentation.activities.FilmActivity;
+import nl.code7.prog4tent_android.presentation.activities.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,3 +17,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 }
+
+
