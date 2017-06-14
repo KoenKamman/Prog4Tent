@@ -216,25 +216,16 @@ router.post('/rentals/:userid/:inventoryid', function (req, res) {
     var userId = req.params.userid;
     var inventoryId = req.params.inventoryid;
 
-    var staffId = req.body.staffId;
+    var staffId = req.body.staffId || 0;
 
     var rentalDate = moment().format('YYYY-MM-DD HH:MM:SS');
     var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:MM:SS');
 
-    var query_str;
-    if (staffId) {
-        query_str = {
-            sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date, staff_id) VALUES (?,?,?,?,?);',
-            values: [rentalDate, inventoryId, userId, returnDate, staffId],
-            timeout: 2000
-        };
-    } else {
-        query_str = {
-            sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date) VALUES (?,?,?,?);',
-            values: [rentalDate, inventoryId, userId, returnDate],
-            timeout: 2000
-        };
-    }
+    var query_str = {
+        sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date, staff_id) VALUES (?,?,?,?,?);',
+        values: [rentalDate, inventoryId, userId, returnDate, staffId],
+        timeout: 2000
+    };
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -255,6 +246,33 @@ router.post('/rentals/:userid/:inventoryid', function (req, res) {
 
 //Updates rental entry for a specific user
 router.put('/rentals/:userid/:inventoryid', function (req, res) {
+    var userId = req.params.userid;
+    var inventoryId = req.params.inventoryid;
+
+    var staffId = req.body.staffId || 'staff_id';
+    var rentalDate = req.body.rentalDate || 'rental_date';
+    var returnDate = req.body.returnDate || 'return_date';
+
+    var query_str = {
+        sql: 'UPDATE `rental` SET rental_date = ?, return_date = ?, staff_id = ? WHERE customer_id = ? AND inventory_id = ?;',
+        values: [rentalDate, returnDate, staffId, userId, inventoryId],
+        timeout: 2000
+    };
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log(err);
+            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+            }
+            res.status(200).json(rows);
+        });
+    });
 });
 
 //Deletes a rental entry for a specific user
