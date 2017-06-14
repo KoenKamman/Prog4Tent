@@ -1,10 +1,12 @@
 package nl.code7.prog4tent_android.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Whrabbit on 6/13/2017.
  */
 
-public class Customer {
+public class Customer  implements Serializable {
     int customer_id, store_id, address_id, active;
     String first_name, last_name, email, create_date, last_update;
 

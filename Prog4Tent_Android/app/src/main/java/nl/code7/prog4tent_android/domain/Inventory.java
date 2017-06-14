@@ -1,10 +1,12 @@
 package nl.code7.prog4tent_android.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Whrabbit on 6/13/2017.
  */
 
-public class Inventory {
+public class Inventory  implements Serializable {
     int inventory_id, film_id, store_id;
     String last_update;
 
