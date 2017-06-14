@@ -121,10 +121,47 @@ router.post('/register', function (req, res) {
 
 });
 
-router.get('/films?offset=:start&count=:number', function (req, res) {
+router.get('/films', function (req, res) {
+    var offset = req.query.offset;
+    var count = req.query.count;
+
+    var query_str;
+    query_str = 'SELECT * FROM film ORDER BY film_id LIMIT '+ count +' OFFSET '+ offset + ';';
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            throw err
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                throw err
+            }
+            res.status(200).json(rows);
+        });
+    });
 });
 
 router.get('/films/:filmid', function (req, res) {
+    var id = req.params.filmid;
+
+    var query_str;
+    if (id) {
+        query_str = 'SELECT * FROM film WHERE film_id = ' + id + ';';
+    } else {
+        query_str = 'SELECT * FROM film';
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            throw err
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                throw err
+            }
+            res.status(200).json(rows);
+        });
+    });
 });
 
 router.all('*', function (req, res, next) {
