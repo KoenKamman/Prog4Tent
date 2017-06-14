@@ -16,6 +16,7 @@ var path = require('path');
 var pool = require('../db/db_connector');
 var config = require('../config.json');
 
+//Create a token
 function encodeToken(username) {
     const payload = {
         exp: moment().add(10, 'days').unix(),
@@ -25,6 +26,7 @@ function encodeToken(username) {
     return jwt.encode(payload, config.secretkey);
 }
 
+//Check if token has expired
 function decodeToken(token, cb) {
 
     try {
@@ -41,6 +43,7 @@ function decodeToken(token, cb) {
     }
 }
 
+//Logging in with a valid username and password returns a token
 router.post('/login', function (req, res) {
 
     var username = req.body.username || '';
@@ -85,6 +88,7 @@ router.post('/login', function (req, res) {
 
 });
 
+//Register a new user
 router.post('/register', function (req, res) {
     var body = req.body;
 
@@ -121,6 +125,7 @@ router.post('/register', function (req, res) {
 
 });
 
+//Returns film info of multiple films by film_id
 router.get('/films', function (req, res) {
     var offset = req.query.offset;
     var count = req.query.count;
@@ -143,6 +148,7 @@ router.get('/films', function (req, res) {
     });
 });
 
+//Returns info about a specific film
 router.get('/films/:filmid', function (req, res) {
     var id = req.params.filmid;
 
@@ -168,6 +174,8 @@ router.get('/films/:filmid', function (req, res) {
     });
 });
 
+//The following routes require a token, the previous ones do not
+//Check for authentication token
 router.all('*', function (req, res, next) {
     var token = (req.header('X-Access-Token')) || '';
 
@@ -181,6 +189,7 @@ router.all('*', function (req, res, next) {
     });
 });
 
+//Returns rentals for a specific user
 router.get('/rentals/:userId', function (req, res) {
     var userId = req.params.userId;
 
@@ -202,12 +211,15 @@ router.get('/rentals/:userId', function (req, res) {
     });
 });
 
+//Creates a new rental entry for a specific user
 router.post('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
+//Updates rental entry for a specific user
 router.put('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
+//Deletes a rental entry for a specific user
 router.delete('/rentals/:userid/:inventoryid', function (req, res) {
 });
 
