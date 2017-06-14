@@ -1,14 +1,11 @@
 <resources>
     <string name="app_name">Programmeren 4 Tentamen</string>
-    <!-- LOGIN STRINGS-->
+    <!-- LOGIN& REGISTER STRINGS-->
     <string name="counter">Counter</string>
     <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="film_title">Film title</string>
-    <string name="film_rental_date">Rental Date</string>
-    <string name="film_rental_period">Rental Period</string>
     <string name="make_new_account">Make new account</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Password </string>
@@ -16,7 +13,27 @@
     <string name="sign_in">Sign in</string>
     <string name="title_activity_login">LoginActivity</string>
 
+    <!--FILM STRINGS-->
+    <string name="film_id">Film ID</string>
+    <string name="film_title">Film title</string>
+    <string name="film_description">Description</string>
+    <string name="film_release_year">Release Year</string>
+    <string name="film_language_id">Language ID</string>
+    <string name="film_original_language_id">Orignal Language ID</string>
+    <string name="film_rental_duration">Rental Duration</string>
+    <string name="film_rental_rate">Rental Rate</string>
+    <string name="film_length">Length</string>
+    <string name="film_replacement_cost">Replacement Cost</string>
+    <string name="film_rating">Rating</string>
+    <string name="film_special_features">Special Features</string>
+    <string name="film_last_update">Last Update</string>
+    <string name="film_rental_date">Rental Date</string>
+    <string name="film_rental_period">Rental Period</string>
+    <string name="film_rent_film">Rent Film</string>
+    <string name="rental_return_date">Return Date</string>
+    <string name="rental_return_film">Return Film</string>
 
+    <!--NAVIGATION STRINGS-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open navigation drawer</string>
@@ -27,14 +44,4 @@
         <item>Films</item>
         <item>Rental</item>
     </string-array>
-
-    <string name="id">ID</string>
-    <string name="name">Name</string>
-    <string name="countryCode">Country Code</string>
-    <string name="district">District</string>
-    <string name="population">Population</string>
-    <string name="save">Save city</string>
-    <string name="delete">Delete city</string>
-    <string name="add">Add new city</string>
-    <string name="edit">Edit city</string>
 </resources>
