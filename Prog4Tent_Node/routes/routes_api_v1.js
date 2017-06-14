@@ -131,7 +131,12 @@ router.get('/films', function (req, res) {
     var count = req.query.count;
 
     var query_str;
-    query_str = 'SELECT * FROM film ORDER BY film_id LIMIT ' + count + ' OFFSET ' + offset + ';';
+    if (offset && count) {
+        query_str = 'SELECT * FROM film ORDER BY film_id LIMIT ' + count + ' OFFSET ' + offset + ';';
+    } else {
+        query_str = 'SELECT * FROM film ORDER BY film_id;';
+    }
+
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
