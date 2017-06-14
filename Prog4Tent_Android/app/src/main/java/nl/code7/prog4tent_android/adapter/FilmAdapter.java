@@ -18,8 +18,8 @@ import nl.code7.prog4tent_android.domain.Film;
 
 public class FilmAdapter extends ArrayAdapter<Film> {
 
-    public FilmAdapter(Context context, ArrayList<Film> cities){
-        super(context, 0, cities);
+    public FilmAdapter(Context context, ArrayList<Film> films){
+        super(context, 0, films);
     }
     @Override
     public View getView(int position, View convertview, ViewGroup parent) {

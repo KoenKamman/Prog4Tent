@@ -1,10 +1,12 @@
 package nl.code7.prog4tent_android.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Whrabbit on 6/13/2017.
  */
 
-public class Rental {
+public class Rental  implements Serializable {
     int rental_id, inventory_id, customer_id, staff_id;
     String rental_date;
     String return_date;

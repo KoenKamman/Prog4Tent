@@ -1,10 +1,12 @@
 package nl.code7.prog4tent_android.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Whrabbit on 6/13/2017.
  */
 
-public class Film {
+public class Film implements Serializable {
     String title, description, rating, special_feature, last_update;
     int film_id, release_year, language_id, original_language_id, rental_duration, length;
     double rental_rate, replacement_cost;
