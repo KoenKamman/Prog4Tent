@@ -25,7 +25,7 @@ import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity{
 
@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity{
     private static final String TAG = FilmFragment.class.getName();
 
     // UI references.
-    private AutoCompleteTextView emailView;
+    private AutoCompleteTextView usernameView;
     private EditText passwordView;
     private View progressView;
     private View loginFormView;
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
 
         // Login form
-        emailView = (AutoCompleteTextView) findViewById(R.id.email_EditText);
+        usernameView = (AutoCompleteTextView) findViewById(R.id.username_EditText);
         passwordView = (EditText) findViewById(R.id.password_EditText);
 
         // Login with existing account
@@ -53,10 +53,10 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // Store values at the time of the login attempt.
-                String email = emailView.getText().toString();
+                String username = usernameView.getText().toString();
                 String password = passwordView.getText().toString();
 
-                volleyLogin(email, password);
+                volleyLogin(username, password);
 
             }
         });
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity{
 
     public void volleyLogin(String u, String p) {
 
-        final String email = u;
+        final String username = u;
         final String password = p;
 
         // Instantiate the RequestQueue.
@@ -98,8 +98,8 @@ public class LoginActivity extends AppCompatActivity{
                             Log.i(TAG, "Response: " + response);
 
                             //Start activity and put response/token in extras
-                            Intent i = new Intent(getApplicationContext(), FilmFragment.class);
-                            i.putExtra("EMAIL", emailView.getEditableText().toString());
+                            Intent i = new Intent(getApplicationContext(), FilmActivity.class);
+                            i.putExtra("USERNAME", usernameView.getEditableText().toString());
                             String token = response.replaceAll("^\"|\"$", "");
                             i.putExtra("TOKEN", token);
                             startActivity(i);
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public byte[] getBody() throws AuthFailureError {
 
-                String mContent = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+                String mContent = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
                 byte[] body = new byte[0];
                 try {
                     body = mContent.getBytes("UTF-8");

@@ -12,11 +12,11 @@
     tools:context="nl.code7.prog4tent_android.presentation.activities.RegistrationActivity">
 
     <EditText
-        android:id="@+id/new_email_EditText"
+        android:id="@+id/new_username_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/prompt_email"
+        android:hint="@string/prompt_username"
         android:inputType="textPersonName" />
 
     <EditText
@@ -25,6 +25,47 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/new_firstname_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_firstname"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/new_lastname_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_lastname"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/new_email_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_email"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/new_adress_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_addressid"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/new_storeid_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_storeid"
         android:inputType="textPersonName" />
 
     <Button

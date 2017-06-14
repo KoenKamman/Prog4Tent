@@ -27,7 +27,7 @@ import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 public class RegistrationActivity extends AppCompatActivity {
 
     // UI references.
-    private EditText emailView, passwordView;
+    private EditText firstnameView, lastnameView, emailView, usernameView, passwordView, addressView, storeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +35,29 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         // Login form
+        firstnameView = (EditText) findViewById(R.id.new_firstname_EditText);
+        lastnameView = (EditText) findViewById(R.id.new_lastname_EditText);
         emailView = (EditText) findViewById(R.id.new_email_EditText);
+        usernameView = (EditText) findViewById(R.id.new_username_EditText);
         passwordView = (EditText) findViewById(R.id.new_password_EditText);
+        addressView = (EditText) findViewById(R.id.new_adress_EditText);
+        storeView = (EditText) findViewById(R.id.new_storeid_EditText);
+
 
         Button make_account_Btn = (Button) findViewById(R.id.complete_registration_Button);
         make_account_Btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                String firstname = firstnameView.getText().toString();
+                String lastname = lastnameView.getText().toString();
                 String email = emailView.getText().toString();
+                String username = usernameView.getText().toString();
                 String password = passwordView.getText().toString();
+                String address = addressView.getText().toString();
+                String store = storeView.getText().toString();
 
-                volleyRegistration(email, password);
-//                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivity(i);
+                volleyRegistration(firstname, lastname, email, username, password, address, store);
+
 
 
             }
@@ -56,10 +66,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    public void volleyRegistration(String u, String p) {
+    public void volleyRegistration(String fn, String ln,String em, String u, String p, String add, String st) {
 
-        final String email = u;
+        final String firstname = fn;
+        final String lastname = ln;
+        final String email = em;
+        final String username = u;
         final String password = p;
+        final String address = add;
+        final String store = st;
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -79,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             //Log.i(TAG, "Response: " + response);
 
                             //Start activity and put response/token in extras
-                            Intent i = new Intent(getApplicationContext(), FilmFragment.class);
+                            Intent i = new Intent(getApplicationContext(), FilmActivity.class);
                             i.putExtra("EMAIL", emailView.getEditableText().toString());
                             String token = response.replaceAll("^\"|\"$", "");
                             i.putExtra("TOKEN", token);
@@ -117,7 +132,8 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
 
-                String mContent = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+                String mContent = "{\"firstName\":\"" + firstname + "\",\"lastName\":\"" + lastname + "\",\"email\":\"" + email + "\",\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"addressId\":\"" + address + "\",\"storeId\":\"" + store + "\"}";
+                Log.i("TAG", mContent);
                 byte[] body = new byte[0];
                 try {
                     body = mContent.getBytes("UTF-8");
