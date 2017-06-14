@@ -129,12 +129,14 @@ router.get('/films', function (req, res) {
     query_str = 'SELECT * FROM film ORDER BY film_id LIMIT '+ count +' OFFSET '+ offset + ';';
     pool.getConnection(function (err, connection) {
         if (err) {
-            throw err
+            console.log(err);
+            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
-                throw err
+                console.log(err);
+                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
@@ -152,12 +154,14 @@ router.get('/films/:filmid', function (req, res) {
     }
     pool.getConnection(function (err, connection) {
         if (err) {
-            throw err
+            console.log(err);
+            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
-                throw err
+                console.log(err);
+                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
