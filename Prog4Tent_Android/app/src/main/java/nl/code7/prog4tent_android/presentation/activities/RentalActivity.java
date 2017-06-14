@@ -17,7 +17,7 @@ import nl.code7.prog4tent_android.adapter.DrawerItemCustomAdapter;
 import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 import nl.code7.prog4tent_android.presentation.fragments.RentalFragment;
 
-public class FilmActivity extends AppCompatActivity {
+public class RentalActivity extends AppCompatActivity {
 
     private String[] mNavigationDrawerItemTitles;
     private DrawerLayout mDrawerLayout;
@@ -30,7 +30,7 @@ public class FilmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_film);
+        setContentView(R.layout.activity_rental);
         mTitle = mDrawerTitle = getTitle();
         mNavigationDrawerItemTitles= getResources().getStringArray(R.array.navigation_drawer_items_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -125,6 +125,4 @@ public class FilmActivity extends AppCompatActivity {
         //This is necessary to change the icon of the Drawer Toggle upon state change.
         mDrawerToggle.syncState();
     }
-
-
 }

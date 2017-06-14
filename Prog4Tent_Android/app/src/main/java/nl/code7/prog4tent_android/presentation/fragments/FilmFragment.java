@@ -76,8 +76,11 @@ public class FilmFragment extends Fragment {
 
         filmAdapter = new FilmAdapter(getContext(), filmList);
         filmListView.setAdapter(filmAdapter);
+
         volleyFilms();
         return rootView;
+
+
     }
 
 
