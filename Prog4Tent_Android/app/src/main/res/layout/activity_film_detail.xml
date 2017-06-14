@@ -107,6 +107,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:text="@string/film_rent_movie" />
+        android:text="@string/film_rent_film" />
 
 </LinearLayout>
