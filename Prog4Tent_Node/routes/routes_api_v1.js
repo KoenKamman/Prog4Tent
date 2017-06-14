@@ -55,13 +55,13 @@ router.post('/login', function (req, res) {
         pool.getConnection(function (err, connection) {
             if (err) {
                 console.log(err);
-                res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+                res.status(503).json({error: new Error("Service Unavailable").message});
             } else {
                 connection.query(query_str, function (err, rows, fields) {
                     connection.release();
                     if (err) {
                         console.log(err);
-                        res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                        res.status(500).json({error: new Error("Internal Server Error").message});
                     }
 
                     if (rows[0]) {
@@ -70,20 +70,20 @@ router.post('/login', function (req, res) {
                             if (bcrypt.compareSync(password, hash)) {
                                 res.status(200).json({"username": username, "token": encodeToken(username)});
                             } else {
-                                res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
+                                res.status(400).json({error: new Error("Invalid username and/or password").message});
                             }
                         } else {
-                            res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
+                            res.status(400).json({error: new Error("Invalid username and/or password").message});
                         }
                     } else {
-                        res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
+                        res.status(400).json({error: new Error("Invalid username and/or password").message});
                     }
 
                 });
             }
         });
     } else {
-        res.status((err.status || 400 )).json({error: new Error("Invalid username and/or password").message});
+        res.status(400).json({error: new Error("Invalid username and/or password").message});
     }
 
 });
@@ -106,13 +106,13 @@ router.post('/register', function (req, res) {
         pool.getConnection(function (err, connection) {
             if (err) {
                 console.log(err);
-                res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+                res.status(503).json({error: new Error("Service Unavailable").message});
             } else {
                 connection.query(query_str, function (err, rows, fields) {
                     connection.release();
                     if (err) {
                         console.log(err);
-                        res.status((err.status || 500 )).json({error: new Error("Internal Server Error - username may already be in use").message});
+                        res.status(500).json({error: new Error("Internal Server Error - username may already be in use").message});
                     }
                     res.status(200).json(rows);
                 });
@@ -140,13 +140,13 @@ router.get('/films', function (req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
-            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            res.status(503).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
                 console.log(err);
-                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                res.status(500).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
@@ -166,13 +166,13 @@ router.get('/films/:filmid', function (req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
-            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            res.status(503).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
                 console.log(err);
-                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                res.status(500).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
@@ -187,7 +187,7 @@ router.all('*', function (req, res, next) {
     decodeToken(token, function (err, payload) {
         if (err) {
             console.log(err);
-            res.status((err.status || 401 )).json({error: new Error("Not authorised").message});
+            res.status(401).json({error: new Error("Not authorised").message});
         } else {
             next();
         }
@@ -203,13 +203,13 @@ router.get('/rentals/:userid', function (req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
-            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            res.status(503).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
                 console.log(err);
-                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                res.status(503).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
@@ -235,13 +235,13 @@ router.post('/rentals/:userid/:inventoryid', function (req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
-            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            res.status(503).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
                 console.log(err);
-                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                res.status(500).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
@@ -268,13 +268,13 @@ router.put('/rentals/:userid/:inventoryid', function (req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             console.log(err);
-            res.status((err.status || 503 )).json({error: new Error("Service Unavailable").message});
+            res.status(503).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
                 console.log(err);
-                res.status((err.status || 500 )).json({error: new Error("Internal Server Error").message});
+                res.status(500).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
@@ -294,12 +294,14 @@ router.delete('/rentals/:userid/:inventoryid', function (req, res) {
 
     pool.getConnection(function (err, connection) {
         if (err) {
-            throw err
+            console.log(err);
+            res.status(503).json({error: new Error("Service Unavailable").message});
         }
         connection.query(query_str, function (err, rows, fields) {
             connection.release();
             if (err) {
-                throw err
+                console.log(err);
+                res.status(500).json({error: new Error("Internal Server Error").message});
             }
             res.status(200).json(rows);
         });
