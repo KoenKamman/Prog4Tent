@@ -30,7 +30,7 @@ describe('Login Test', function () {
             });
     });
 
-    it('Correct Credentials POST /api/v1/login', function (done) {
+    it('Valid Credentials POST /api/v1/login', function (done) {
         chai.request(server)
             .post('/api/v1/login')
             .send({"username": "test", "password": "testing"})
@@ -38,18 +38,6 @@ describe('Login Test', function () {
                 res.should.have.status(200);
                 res.body.should.have.property('username');
                 res.body.should.have.property('token');
-                done();
-            });
-    });
-});
-
-describe('Register Test', function () {
-    it('Empty Values POST /api/v1/login', function (done) {
-        chai.request(server)
-            .post('/api/v1/login')
-            .send({"username": "", "password": ""})
-            .end(function (err, res) {
-                res.should.have.status(400);
                 done();
             });
     });
