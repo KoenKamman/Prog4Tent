@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity{
         RequestQueue queue = Volley.newRequestQueue(this);
 
         //USE 10.0.2.2 INSTEAD OF localhost IF USING AN EMULATOR
-        String url = "http://145.49.26.213:8080/api/v1/login";
+        String url = "http://10.0.2.2:8080/api/v1/login";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
