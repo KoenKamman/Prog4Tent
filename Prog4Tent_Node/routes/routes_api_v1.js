@@ -50,7 +50,11 @@ router.post('/login', function (req, res) {
     var password = req.body.password || '';
 
     if (username && password) {
-        var query_str = 'SELECT username, password FROM customer WHERE username = "' + username + '";';
+        var query_str = {
+            sql: 'SELECT username, password, customer_id FROM customer WHERE username = ?;',
+            values: [username],
+            timeout: 2000
+        };
 
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -67,8 +71,9 @@ router.post('/login', function (req, res) {
                     if (rows[0]) {
                         if (rows[0].hasOwnProperty('username') && rows[0].hasOwnProperty('password')) {
                             var hash = rows[0].password;
+                            var customer_id = rows[0].customer_id;
                             if (bcrypt.compareSync(password, hash)) {
-                                res.status(200).json({"username": username, "token": encodeToken(username)});
+                                res.status(200).json({"username": username, "customer_id": customer_id, "token": encodeToken(username)});
                             } else {
                                 res.status(400).json({error: new Error("Invalid username and/or password").message});
                             }
@@ -88,18 +93,18 @@ router.post('/login', function (req, res) {
 
 });
 
-//Register a new user
+//Register a new customer
 router.post('/register', function (req, res) {
     var body = req.body;
 
     if (body.username !== "" && body.password !== "") {
 
-        var createDate = moment().format('YYYY-MM-DD HH:MM:SS');
+        var createDate = moment().format('YYYY-MM-DD HH:mm:ss');
         var hash = bcrypt.hashSync(body.password, 10);
 
         var query_str = {
             sql: 'INSERT INTO `customer`(store_id, first_name, last_name, email, address_id, create_date, username, password) VALUES (?,?,?,?,?,?,?,?)',
-            values: [body.storeId, body.firstName, body.lastName, body.email, body.addressId, createDate, body.username, hash],
+            values: [body.store_id, body.first_name, body.last_name, body.email, body.address_id, createDate, body.username, hash],
             timeout: 2000
         };
 
@@ -125,6 +130,32 @@ router.post('/register', function (req, res) {
 
 });
 
+//Returns customer_id of a specific customer
+router.get('/customers/:username', function (req, res) {
+    var username = req.params.username;
+
+    var query_str = {
+        sql: 'SELECT username, customer_id FROM customer WHERE username = ?;',
+        values: [username],
+        timeout: 2000
+    };
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log(err);
+            res.status(503).json({error: new Error("Service Unavailable").message});
+        }
+        connection.query(query_str, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+                console.log(err);
+                res.status(500).json({error: new Error("Internal Server Error").message});
+            }
+            res.status(200).json(rows[0]);
+        });
+    });
+});
+
 //Returns film info of multiple films by film_id
 router.get('/films', function (req, res) {
     var offset = req.query.offset;
@@ -132,7 +163,11 @@ router.get('/films', function (req, res) {
 
     var query_str;
     if (offset && count) {
-        query_str = 'SELECT * FROM film ORDER BY film_id LIMIT ' + count + ' OFFSET ' + offset + ';';
+        query_str = {
+            sql: 'SELECT * FROM film ORDER BY film_id LIMIT ? OFFSET ?;',
+            values: [count, offset],
+            timeout: 2000
+        };
     } else {
         query_str = 'SELECT * FROM film ORDER BY film_id;';
     }
@@ -154,8 +189,8 @@ router.get('/films', function (req, res) {
 });
 
 //Returns info about a specific film
-router.get('/films/:filmid', function (req, res) {
-    var id = req.params.filmid;
+router.get('/films/:film_id', function (req, res) {
+    var id = req.params.film_id;
 
     var query_str;
     if (id) {
@@ -194,11 +229,11 @@ router.all('*', function (req, res, next) {
     });
 });
 
-//Returns rentals for a specific user
-router.get('/rentals/:userid', function (req, res) {
-    var userId = req.params.userid;
+//Returns rentals for a specific customer
+router.get('/rentals/:customer_id', function (req, res) {
+    var customerId = req.params.customer_id;
 
-    var query_str = 'SELECT * FROM rental WHERE customer_id =' + userId;
+    var query_str = 'SELECT * FROM rental WHERE customer_id =' + customerId;
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -216,19 +251,20 @@ router.get('/rentals/:userid', function (req, res) {
     });
 });
 
-//Creates a new rental entry for a specific user
-router.post('/rentals/:userid/:inventoryid', function (req, res) {
-    var userId = req.params.userid;
-    var inventoryId = req.params.inventoryid;
+//Creates a new rental entry for a specific customer
+router.post('/rentals/:customer_id/:inventory_id', function (req, res) {
+    var customerId = req.params.customer_id;
+    var inventoryId = req.params.inventory_id;
 
-    var staffId = req.body.staffId || 0;
+    var staffId = req.body.staff_id || 0;
 
-    var rentalDate = moment().format('YYYY-MM-DD HH:MM:SS');
-    var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:MM:SS');
+    var rentalDate = moment().format('YYYY-MM-DD HH:mm:ss');
+    console.log(rentalDate);
+    var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:mm:ss');
 
     var query_str = {
         sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date, staff_id) VALUES (?,?,?,?,?);',
-        values: [rentalDate, inventoryId, userId, returnDate, staffId],
+        values: [rentalDate, inventoryId, customerId, returnDate, staffId],
         timeout: 2000
     };
 
@@ -249,19 +285,18 @@ router.post('/rentals/:userid/:inventoryid', function (req, res) {
 
 });
 
-//Updates rental entry for a specific user
-router.put('/rentals/:userid/:inventoryid', function (req, res) {
-    var userId = req.params.userid;
-    var inventoryId = req.params.inventoryid;
+//Updates rental entry for a specific customer
+router.put('/rentals/:customer_id/:inventory_id', function (req, res) {
+    var customerId = req.params.customer_id;
+    var inventoryId = req.params.inventory_id;
 
-    //TODO: Change default values
-    var staffId = req.body.staffId || 'staff_id';
-    var rentalDate = req.body.rentalDate || 'rental_date';
-    var returnDate = req.body.returnDate || 'return_date';
+    var staffId = req.body.staff_id;
+    var rentalDate = req.body.rental_date;
+    var returnDate = req.body.return_date;
 
     var query_str = {
         sql: 'UPDATE `rental` SET rental_date = ?, return_date = ?, staff_id = ? WHERE customer_id = ? AND inventory_id = ?;',
-        values: [rentalDate, returnDate, staffId, userId, inventoryId],
+        values: [rentalDate, returnDate, staffId, customerId, inventoryId],
         timeout: 2000
     };
 
@@ -281,14 +316,14 @@ router.put('/rentals/:userid/:inventoryid', function (req, res) {
     });
 });
 
-//Deletes a rental entry for a specific user
-router.delete('/rentals/:userid/:inventoryid', function (req, res) {
-    var userId = req.params.userid;
-    var inventoryId = req.params.inventoryid;
+//Deletes a rental entry for a specific customer
+router.delete('/rentals/:customer_id/:inventory_id', function (req, res) {
+    var customerId = req.params.customer_id;
+    var inventoryId = req.params.inventory_id;
 
     var query_str = {
         sql: 'DELETE FROM rental WHERE customer_id = ? AND inventory_id = ?;',
-        values: [userId, inventoryId],
+        values: [customerId, inventoryId],
         timeout: 2000
     };
 
