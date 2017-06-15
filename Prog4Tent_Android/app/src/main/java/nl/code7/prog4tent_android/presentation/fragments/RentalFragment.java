@@ -47,7 +47,7 @@ public class RentalFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        customer = (Customer) getActivity().getIntent().getSerializableExtra("CITY");
+        customer = (Customer) getActivity().getIntent().getSerializableExtra("CUSTOMER");
         View rootView = inflater.inflate(R.layout.fragment_rental, container, false);
 
         rentalList = new ArrayList<Rental>();
@@ -90,27 +90,14 @@ public class RentalFragment extends Fragment {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject obj = response.getJSONObject(i);
                                 Rental rental = new Rental();
-                                rental.setRental_id(obj.getInt("rental_id"));
+                                rental.setRental_id(obj.getString("rental_id"));
+                                rental.setTitle(obj.getString("title"));
                                 rental.setRental_date(obj.getString("rental_date"));
                                 rental.setInventory_id(obj.getInt("inventory_id"));
                                 rental.setCustomer_id(obj.getInt("customer_id"));
                                 rental.setReturn_date(obj.getString("return_date"));
                                 rental.setStaff_id(obj.getInt("staff_id"));
                                 rental.setLast_update(obj.getString("last_update"));
-
-//                                Film film = new Film();
-//
-//                                film.setFilm_id(obj.getInt("film_id"));
-//                                film.setTitle(obj.getString("title"));
-//                                film.setDescription(obj.getString("description"));
-//                                film.setRelease_year(obj.getInt("release_year"));
-//                                film.setLanguage_id(obj.getInt("language_id"));
-//                                film.setRental_rate(obj.getInt("rental_rate"));
-//                                film.setLength(obj.getInt("length"));
-//                                film.setReplacement_cost(obj.getInt("replacement_cost"));
-//                                film.setRating(obj.getString("rating"));
-//                                film.setSpecial_feature(obj.getString("special_features"));
-//                                film.setLast_update(obj.getString("last_update"));
                                 rentalList.add(rental);
                             }
                         } catch (JSONException e) {

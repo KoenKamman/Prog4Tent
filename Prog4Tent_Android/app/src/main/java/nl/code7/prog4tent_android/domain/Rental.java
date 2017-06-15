@@ -7,14 +7,22 @@ import java.io.Serializable;
  */
 
 public class Rental  implements Serializable {
-    int rental_id, inventory_id, customer_id, staff_id;
-    String rental_date, return_date;
+    int  inventory_id, customer_id, staff_id;
+    String rental_id,rental_date, return_date, title;
 
-    public int getRental_id() {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String  getRental_id() {
         return rental_id;
     }
 
-    public void setRental_id(int rental_id) {
+    public void setRental_id(String rental_id) {
         this.rental_id = rental_id;
     }
 

@@ -1,6 +1,7 @@
 package nl.code7.prog4tent_android.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +28,18 @@ public class RentalAdapter extends ArrayAdapter<Rental> {
     public View getView(int position, View convertview, ViewGroup parent) {
 
         Rental rental= getItem(position);
-
+        Film film;
         if (convertview == null){
-            convertview = LayoutInflater.from(getContext()).inflate(R.layout.listview_film_item_row, parent, false);
+            convertview = LayoutInflater.from(getContext()).inflate(R.layout.listview_rental_item_row, parent, false);
         }
 
-        TextView filmName = (TextView) convertview.findViewById(R.id.film_item_TextView);
-        filmName.setText(rental.getRental_id());
+        TextView filmName = (TextView) convertview.findViewById(R.id.rental_item_TextView);
+        filmName.setText(rental.getTitle());
+        TextView filmRentalDate = (TextView) convertview.findViewById(R.id.rental_date_TV);
+        filmRentalDate.setText(rental.getRental_date());
+        TextView filmPeriod = (TextView) convertview.findViewById(R.id.rental_period_TV);
+        filmPeriod.setText(rental.getReturn_date());
+
 
         return convertview;
 

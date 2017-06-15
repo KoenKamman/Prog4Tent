@@ -7,14 +7,14 @@ import java.io.Serializable;
  */
 
 public class Customer  implements Serializable {
-    int customer_id, store_id, address_id, active;
-    String first_name, last_name, email, create_date, last_update;
+    int  store_id, address_id, active;
+    String first_name, last_name, email, create_date, last_update, customer_id;
 
-    public int getCustomer_id() {
+    public String getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(int customer_id) {
+    public void setCustomer_id(String customer_id) {
         this.customer_id = customer_id;
     }
 

@@ -30,7 +30,7 @@ android:layout_height="match_parent" >
 
     <fragment
         android:id="@+id/film_Fragment"
-        android:name="nl.code7.prog4tent_android.presentation.fragments.RentalFragment"
+        android:name="nl.code7.prog4tent_android.presentation.fragments.FilmFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

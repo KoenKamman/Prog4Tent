@@ -17,11 +17,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 import nl.code7.prog4tent_android.R;
+import nl.code7.prog4tent_android.domain.Customer;
 import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 
 /**
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity{
     private EditText passwordView;
     private View progressView;
     private View loginFormView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +89,7 @@ public class LoginActivity extends AppCompatActivity{
         RequestQueue queue = Volley.newRequestQueue(this);
 
         //USE 10.0.2.2 INSTEAD OF localhost IF USING AN EMULATOR
-        String url = "http://10.0.2.2:8080/api/v1/login";
+        String url = "http://145.49.26.213:8080/api/v1/login";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -93,6 +98,8 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onResponse(String response) {
 
+                        String token = " ";
+                        String id = "";
                         //TODO: Rework if statement
                         if (!response.contains("error") && !response.isEmpty()){
                             Log.i(TAG, "Response: " + response);
@@ -100,7 +107,25 @@ public class LoginActivity extends AppCompatActivity{
                             //Start activity and put response/token in extras
                             Intent i = new Intent(getApplicationContext(), FilmActivity.class);
                             i.putExtra("USERNAME", usernameView.getEditableText().toString());
-                            String token = response.replaceAll("^\"|\"$", "");
+                            Customer customer = new Customer();
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                token = jsonObject.getString("token");
+                                id = jsonObject.getString("customer_id");
+                                customer.setCustomer_id(id);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            Log.i("JFJ", "" + customer.getCustomer_id());
+                            Log.i("DFD", token);
+
+                            i.putExtra("CUSTOMER", customer);
                             i.putExtra("TOKEN", token);
                             startActivity(i);
                         } else {

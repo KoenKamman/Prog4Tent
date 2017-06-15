@@ -233,7 +233,7 @@ router.all('*', function (req, res, next) {
 router.get('/rentals/:customer_id', function (req, res) {
     var customerId = req.params.customer_id;
 
-    var query_str = 'SELECT * FROM rental WHERE customer_id =' + customerId;
+    var query_str = 'SELECT * FROM `rental` INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE rental.customer_id = ' + customerId;
 
     pool.getConnection(function (err, connection) {
         if (err) {
