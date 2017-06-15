@@ -64,7 +64,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/return_film_Btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/rental_return_film" />

@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 public class Rental  implements Serializable {
     int rental_id, inventory_id, customer_id, staff_id;
-    String rental_date;
-    String return_date;
+    String rental_date, return_date;
 
     public int getRental_id() {
         return rental_id;
