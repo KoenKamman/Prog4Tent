@@ -30,11 +30,11 @@ describe('Login Tests', function () {
                         .send({
                             "username": username,
                             "password": password,
-                            "storeId": "1",
-                            "firstName": "mocha",
-                            "lastName": "mocha",
+                            "store_id": "1",
+                            "first_name": "mocha",
+                            "last_name": "mocha",
                             "email": "mocha",
-                            "addressId": "0"
+                            "address_id": "0"
                         })
                         .end(function (err, res) {
                             done();
@@ -72,6 +72,7 @@ describe('Login Tests', function () {
                 res.should.have.status(200);
                 res.body.should.have.property('username');
                 res.body.should.have.property('token');
+                res.body.should.have.property('customer_id');
                 done();
             });
     });
@@ -94,11 +95,11 @@ describe('Register Tests', function () {
                         .send({
                             "username": username,
                             "password": password,
-                            "storeId": "1",
-                            "firstName": "mocha",
-                            "lastName": "mocha",
+                            "store_id": "1",
+                            "first_name": "mocha",
+                            "last_name": "mocha",
                             "email": "mocha",
-                            "addressId": "0"
+                            "address_id": "0"
                         })
                         .end(function (err, res) {
                             done();
@@ -113,11 +114,11 @@ describe('Register Tests', function () {
             .send({
                 "username": username,
                 "password": password,
-                "storeId": "1",
-                "firstName": "mocha",
-                "lastName": "mocha",
+                "store_id": "1",
+                "first_name": "mocha",
+                "last_name": "mocha",
                 "email": "mocha",
-                "addressId": "0"
+                "address_id": "0"
             })
             .end(function (err, res) {
                 res.should.have.status(500);
@@ -185,11 +186,11 @@ describe('Rental Tests', function () {
                         .send({
                             "username": username,
                             "password": password,
-                            "storeId": "1",
-                            "firstName": "mocha",
-                            "lastName": "mocha",
+                            "store_id": "1",
+                            "first_name": "mocha",
+                            "last_name": "mocha",
                             "email": "mocha",
-                            "addressId": "0"
+                            "address_id": "0"
                         })
                         .end(function (err, res) {
                         });
@@ -239,6 +240,7 @@ describe('Rental Tests', function () {
             .post('/api/v1/rentals/' + customerId + '/10')
             .end(function (err, res) {
                 res.should.have.status(401);
+                res.body.should.have.property('error');
                 done();
             });
     });
@@ -246,10 +248,84 @@ describe('Rental Tests', function () {
     it('Valid Token PUT /api/v1/rentals/', function (done) {
         chai.request(server)
             .put('/api/v1/rentals/' + customerId + '/10')
-            .send({"staff_id":"86","rental_date":"2040-07-14 19:06:48", "return_date":"2021-07-14 19:06:41"})
+            .send({"staff_id":"86","rental_date":"2100-07-14 19:06:48", "return_date":"2021-07-14 19:06:41"})
             .set('X-Access-Token', token)
             .end(function (err, res) {
                 res.should.have.status(200);
+                done();
+            });
+    });
+
+    it('No Token PUT /api/v1/rentals/', function (done) {
+        chai.request(server)
+            .put('/api/v1/rentals/' + customerId + '/10')
+            .send({"staff_id":"86","rental_date":"2100-07-14 19:06:48", "return_date":"2021-07-14 19:06:41"})
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.body.should.have.property('error');
+                done();
+            });
+    });
+
+    it('Valid Token DELETE /api/v1/rentals/', function (done) {
+        chai.request(server)
+            .delete('/api/v1/rentals/' + customerId + '/10')
+            .set('X-Access-Token', token)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    it('No Token DELETE /api/v1/rentals/', function (done) {
+        chai.request(server)
+            .delete('/api/v1/rentals/' + customerId + '/10')
+            .end(function (err, res) {
+                res.should.have.status(401);
+                done();
+            });
+    });
+
+});
+
+describe('Customer Tests', function () {
+    var token;
+    var customerId;
+
+    before(function (done) {
+        chai.request(server)
+            .post('/api/v1/login')
+            .send({
+                "username": username, "password": password
+            })
+            .end(function (err, res) {
+                if (res.body.hasOwnProperty("token")) {
+                    done();
+                } else {
+                    chai.request(server)
+                        .post('/api/v1/register')
+                        .send({
+                            "username": username,
+                            "password": password,
+                            "store_id": "1",
+                            "first_name": "mocha",
+                            "last_name": "mocha",
+                            "email": "mocha",
+                            "address_id": "0"
+                        })
+                        .end(function (err, res) {
+                            done();
+                        });
+                }
+            });
+    });
+
+    it('Valid Token GET /api/v1/customers/:username', function (done) {
+        chai.request(server)
+            .get('/api/v1/customers/' + username)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.body.should.have.property('customer_id');
                 done();
             });
     });
