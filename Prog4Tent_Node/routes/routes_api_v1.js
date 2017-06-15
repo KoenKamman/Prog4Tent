@@ -169,7 +169,10 @@ router.get('/films', function (req, res) {
             timeout: 2000
         };
     } else {
-        query_str = 'SELECT * FROM film ORDER BY film_id;';
+        query_str = {
+            sql: 'SELECT * FROM film ORDER BY film_id;',
+            timeout: 2000
+        };
     }
 
     pool.getConnection(function (err, connection) {
@@ -194,9 +197,18 @@ router.get('/films/:film_id', function (req, res) {
 
     var query_str;
     if (id) {
-        query_str = 'SELECT * FROM film WHERE film_id = ' + id + ';';
+        query_str = {
+            sql: 'SELECT * FROM film WHERE film_id = ?;',
+            values: [id],
+            timeout: 2000
+        };
     } else {
         query_str = 'SELECT * FROM film';
+        query_str = {
+            sql: 'SELECT * FROM film',
+            timeout: 2000
+        };
+
     }
     pool.getConnection(function (err, connection) {
         if (err) {
