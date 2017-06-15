@@ -30,7 +30,6 @@ import nl.code7.prog4tent_android.adapter.FilmAdapter;
 import nl.code7.prog4tent_android.domain.Film;
 import nl.code7.prog4tent_android.presentation.activities.FilmActivity;
 import nl.code7.prog4tent_android.presentation.activities.FilmDetailActivity;
-import nl.code7.prog4tent_android.presentation.activities.RentalDetailActivity;
 
 public class FilmFragment extends Fragment {
 
@@ -39,12 +38,6 @@ public class FilmFragment extends Fragment {
     private ListView filmListView;
     private ArrayList<Film> filmList;
     private FilmAdapter filmAdapter;
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_film);
-//    }
 
     public FilmFragment() {
     }
@@ -60,14 +53,11 @@ public class FilmFragment extends Fragment {
         filmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent i = new Intent(getContext(), FilmDetailActivity.class);
-
                 Intent i = new Intent(view.getContext(), FilmDetailActivity.class);
                 Film film = filmList.get(position);
                 i.putExtras(getActivity().getIntent().getExtras());
                 i.putExtra("POSITION", position);
                 i.putExtra("FILM", film);
-                startActivityForResult(i, 1);
                 // getrentalslist
                 //i.putExtra("RENTALS", emailView.getEditableText().toString());
                 startActivity(i);
@@ -102,13 +92,29 @@ public class FilmFragment extends Fragment {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject obj = response.getJSONObject(i);
                                 Film film = new Film();
+
+                                film.setFilm_id(obj.getInt("film_id"));
                                 film.setTitle(obj.getString("title"));
-//                                City city = new City();
-//                                city.setCountryCode(obj.getString("CountryCode"));
-//                                city.setDistrict(obj.getString("District"));
-//                                city.setID(obj.getString("ID"));
-//                                city.setName(obj.getString("Name"));
-//                                city.setPopulation(obj.getString("Population"));
+                                film.setDescription(obj.getString("description"));
+                                film.setRelease_year(obj.getInt("release_year"));
+                                film.setLanguage_id(obj.getInt("language_id"));
+                                if (obj.has("original_language_id") && !obj.isNull("original_language_id")) {
+                                    film.setOriginal_language_id(obj.getInt("original_language_id"));
+                                } else {
+                                    film.setOriginal_language_id(0);
+                                }
+                                if (obj.has("rental_duration")) {
+                                    film.setRental_duration(obj.getInt("rental_duration"));
+                                } else {
+                                    film.setOriginal_language_id(0);
+                                }
+
+                                film.setRental_rate(obj.getInt("rental_rate"));
+                                film.setLength(obj.getInt("length"));
+                                film.setReplacement_cost(obj.getInt("replacement_cost"));
+                                film.setRating(obj.getString("rating"));
+                                film.setSpecial_feature(obj.getString("special_features"));
+                                film.setLast_update(obj.getString("last_update"));
                                 filmList.add(film);
                             }
                         } catch (JSONException e) {
@@ -141,25 +147,6 @@ public class FilmFragment extends Fragment {
         // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest);
 
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1) {
-
-            if(resultCode == 2){
-                filmList.remove(data.getExtras().getInt("POSITION"));
-                filmAdapter.notifyDataSetChanged();
-            } else if (resultCode == 3){
-                Film film = filmList.get(data.getExtras().getInt("POSITION"));
-                Bundle b = data.getExtras();
-                film.setTitle(b.getString("TITLE"));
-//                film.setName(b.getString("NAME"));
-//                film.setPopulation(b.getString("POPULATION"));
-                filmAdapter.notifyDataSetChanged();
-            }
-
-        }
     }
 
 }
