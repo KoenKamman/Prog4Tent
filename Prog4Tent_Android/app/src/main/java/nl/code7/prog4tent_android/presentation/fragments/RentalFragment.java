@@ -78,7 +78,7 @@ public class RentalFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         //USE 10.0.2.2 INSTEAD OF localhost IF USING AN EMULATOR
-        String url = "http://10.0.2.2:8080/api/v1/rentals/" + customer.getCustomer_id();
+        String url = "https://tentprog4.herokuapp.com/api/v1/rentals/" + customer.getCustomer_id();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url,
