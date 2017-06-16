@@ -52,5 +52,6 @@
     <string-array name="navigation_drawer_items_array">
         <item>Films</item>
         <item>Rental</item>
+        <item>Logout</item>
     </string-array>
 </resources>
