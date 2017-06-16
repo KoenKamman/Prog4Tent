@@ -132,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public byte[] getBody() throws AuthFailureError {
 
-                String mContent = "{\"firstName\":\"" + firstname + "\",\"lastName\":\"" + lastname + "\",\"email\":\"" + email + "\",\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"addressId\":\"" + address + "\",\"storeId\":\"" + store + "\"}";
+                String mContent = "{\"first_name\":\"" + firstname + "\",\"last_name\":\"" + lastname + "\",\"email\":\"" + email + "\",\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"address_id\":\"" + address + "\",\"store_id\":\"" + store + "\"}";
                 Log.i("TAG", mContent);
                 byte[] body = new byte[0];
                 try {
