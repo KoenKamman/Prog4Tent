@@ -94,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             //Log.i(TAG, "Response: " + response);
 
                             //Start activity and put response/token in extras
-                            Intent i = new Intent(getApplicationContext(), FilmActivity.class);
+                            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                             i.putExtra("EMAIL", emailView.getEditableText().toString());
                             String token = response.replaceAll("^\"|\"$", "");
                             i.putExtra("TOKEN", token);
