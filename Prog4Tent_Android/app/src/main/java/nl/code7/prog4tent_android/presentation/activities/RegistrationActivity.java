@@ -80,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         //USE 10.0.2.2 INSTEAD OF localhost IF USING AN EMULATOR
-        String url = "http://10.0.2.2:8080/api/v1/register";
+        String url = "https://tentprog4.herokuapp.com/api/v1/register";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
