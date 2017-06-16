@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import nl.code7.prog4tent_android.R;
@@ -38,9 +40,10 @@ public class FilmActivity extends AppCompatActivity {
 
         setupToolbar();
 
-        DataModel[] drawerItem = new DataModel[2];
+        DataModel[] drawerItem = new DataModel[3];
         drawerItem[0] = new DataModel("Films");
         drawerItem[1] = new DataModel("Rentals");
+        drawerItem[2] = new DataModel("Logout");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -50,6 +53,7 @@ public class FilmActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         setupDrawerToggle();
+
 
 
     }
@@ -74,6 +78,8 @@ public class FilmActivity extends AppCompatActivity {
             case 1:
                 fragment = new RentalFragment();
                 break;
+            case 2:
+                finish();
             default:
                 break;
         }
