@@ -30,10 +30,11 @@ import nl.code7.prog4tent_android.adapter.FilmAdapter;
 import nl.code7.prog4tent_android.domain.Film;
 import nl.code7.prog4tent_android.presentation.activities.FilmActivity;
 import nl.code7.prog4tent_android.presentation.activities.FilmDetailActivity;
+import nl.code7.prog4tent_android.presentation.activities.InventoryActivity;
 
 public class FilmFragment extends Fragment {
 
-    private static final String TAG = FilmActivity.class.getName();
+    private static final String TAG = FilmFragment.class.getName();
     
     private ListView filmListView;
     private ArrayList<Film> filmList;
@@ -47,19 +48,17 @@ public class FilmFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_film, container, false);
 
-        filmList = new ArrayList<Film>();
+        filmList = new ArrayList<>();
 
         filmListView = (ListView) rootView.findViewById(R.id.film_ListView);
         filmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(view.getContext(), FilmDetailActivity.class);
+                Intent i = new Intent(view.getContext(), InventoryActivity.class);
                 Film film = filmList.get(position);
                 i.putExtras(getActivity().getIntent().getExtras());
                 i.putExtra("POSITION", position);
                 i.putExtra("FILM", film);
-                // getrentalslist
-                //i.putExtra("RENTALS", emailView.getEditableText().toString());
                 startActivity(i);
             }
         });
@@ -69,7 +68,6 @@ public class FilmFragment extends Fragment {
 
         volleyFilms();
         return rootView;
-
 
     }
 
@@ -128,7 +126,7 @@ public class FilmFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Log.e(TAG, "Something went wrong.");
+                        Log.e(TAG, "Something went wrong.");
                     }
                 }) {
 

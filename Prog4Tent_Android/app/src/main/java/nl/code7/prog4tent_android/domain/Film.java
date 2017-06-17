@@ -7,9 +7,9 @@ import java.io.Serializable;
  */
 
 public class Film implements Serializable {
-    String title, description, rating, special_feature, last_update;
-    int film_id, release_year, language_id, original_language_id, rental_duration, length;
-    double rental_rate, replacement_cost;
+    private String title, description, rating, special_feature, last_update;
+    private int film_id, release_year, language_id, original_language_id, rental_duration, length;
+    private double rental_rate, replacement_cost;
 
     public String getTitle() {
         return title;

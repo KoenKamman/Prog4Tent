@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 
 public class Inventory  implements Serializable {
-    int inventory_id, film_id, store_id;
-    String last_update;
+    private int inventory_id, film_id, store_id;
+    private String last_update;
 
     public int getInventory_id() {
         return inventory_id;

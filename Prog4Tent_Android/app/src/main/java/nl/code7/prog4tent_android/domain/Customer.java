@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 
 public class Customer  implements Serializable {
-    int  store_id, address_id, active;
-    String first_name, last_name, email, create_date, last_update, customer_id;
+    private int  store_id, address_id, active;
+    private String first_name, last_name, email, create_date, last_update, customer_id;
 
     public String getCustomer_id() {
         return customer_id;
