@@ -271,8 +271,9 @@ router.post('/rentals/:customer_id/:inventory_id', function (req, res) {
     var staffId = req.body.staff_id || 0;
 
     var rentalDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    console.log(rentalDate);
-    var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:mm:ss');
+
+    //var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:mm:ss');
+    var returnDate = req.body.return_date;
 
     var query_str = {
         sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date, staff_id) VALUES (?,?,?,?,?);',
