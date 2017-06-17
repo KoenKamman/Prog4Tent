@@ -73,7 +73,11 @@ router.post('/login', function (req, res) {
                             var hash = rows[0].password;
                             var customer_id = rows[0].customer_id;
                             if (bcrypt.compareSync(password, hash)) {
-                                res.status(200).json({"username": username, "customer_id": customer_id, "token": encodeToken(username)});
+                                res.status(200).json({
+                                    "username": username,
+                                    "customer_id": customer_id,
+                                    "token": encodeToken(username)
+                                });
                             } else {
                                 res.status(400).json({error: new Error("Invalid username and/or password").message});
                             }
@@ -195,35 +199,30 @@ router.get('/films', function (req, res) {
 router.get('/films/:film_id', function (req, res) {
     var id = req.params.film_id;
 
-    var query_str;
-    if (id) {
-        query_str = {
+    if (!isNaN(id)) {
+        var query_str = {
             sql: 'SELECT * FROM film WHERE film_id = ?;',
             values: [id],
             timeout: 2000
         };
-    } else {
-        query_str = 'SELECT * FROM film';
-        query_str = {
-            sql: 'SELECT * FROM film',
-            timeout: 2000
-        };
 
-    }
-    pool.getConnection(function (err, connection) {
-        if (err) {
-            console.log(err);
-            res.status(503).json({error: new Error("Service Unavailable").message});
-        }
-        connection.query(query_str, function (err, rows, fields) {
-            connection.release();
+        pool.getConnection(function (err, connection) {
             if (err) {
                 console.log(err);
-                res.status(500).json({error: new Error("Internal Server Error").message});
+                res.status(503).json({error: new Error("Service Unavailable").message});
             }
-            res.status(200).json(rows);
+            connection.query(query_str, function (err, rows, fields) {
+                connection.release();
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({error: new Error("Internal Server Error").message});
+                }
+                res.status(200).json(rows);
+            });
         });
-    });
+    } else {
+        res.status(400).json({error: new Error("film_id must be a number").message});
+    }
 });
 
 //The following routes require a token, the previous ones do not

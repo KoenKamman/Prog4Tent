@@ -154,7 +154,7 @@ describe('Film Tests', function () {
         chai.request(server)
             .get('/api/v1/films/invalid_id')
             .end(function (err, res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
                 res.body.should.have.property('error');
                 done();
             });
