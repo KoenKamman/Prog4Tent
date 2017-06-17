@@ -32,7 +32,8 @@
             android:name=".presentation.activities.FilmActivity"
             android:label="@string/film" />
         <activity android:name=".presentation.activities.RentalDetailActivity" />
-        <activity android:name=".presentation.activities.RentalActivity"/>
+        <activity android:name=".presentation.activities.RentalActivity" />
+        <activity android:name=".presentation.activities.InventoryActivity"></activity>
     </application>
 
 </manifest>

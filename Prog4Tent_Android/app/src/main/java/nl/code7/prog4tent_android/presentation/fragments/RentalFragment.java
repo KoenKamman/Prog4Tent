@@ -33,7 +33,7 @@ import nl.code7.prog4tent_android.presentation.activities.RentalActivity;
 import nl.code7.prog4tent_android.presentation.activities.RentalDetailActivity;
 
 public class RentalFragment extends Fragment {
-    private static final String TAG = RentalActivity.class.getName();
+    private static final String TAG = RentalFragment.class.getName();
 
     private ListView rentalListView;
     private ArrayList<Rental> rentalList;
@@ -50,7 +50,7 @@ public class RentalFragment extends Fragment {
         customer = (Customer) getActivity().getIntent().getSerializableExtra("CUSTOMER");
         View rootView = inflater.inflate(R.layout.fragment_rental, container, false);
 
-        rentalList = new ArrayList<Rental>();
+        rentalList = new ArrayList<>();
         rentalListView= (ListView) rootView.findViewById(R.id.rental_ListView);
         rentalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,10 +60,6 @@ public class RentalFragment extends Fragment {
                 i.putExtras(getActivity().getIntent().getExtras());
                 i.putExtra("POSITION", position);
                 i.putExtra("RENTAL", rental);
-
-
-                // getrentalslist
-                //i.putExtra("RENTALS", emailView.getEditableText().toString());
                 startActivity(i);
             }
         });

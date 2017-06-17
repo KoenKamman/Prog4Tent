@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 
 public class Rental  implements Serializable {
-    int  inventory_id, customer_id, staff_id;
-    String rental_id,rental_date, return_date, title;
+    private int  inventory_id, customer_id, staff_id;
+    private String rental_id,rental_date, return_date, title, last_update;
 
     public String getTitle() {
         return title;
@@ -74,5 +74,4 @@ public class Rental  implements Serializable {
         this.last_update = last_update;
     }
 
-    String last_update;
 }
