@@ -102,7 +102,6 @@ router.post('/register', function (req, res) {
     var body = req.body;
 
     if (body.username !== "" && body.password !== "") {
-
         var createDate = moment().format('YYYY-MM-DD HH:mm:ss');
         var hash = bcrypt.hashSync(body.password, 10);
 
@@ -201,7 +200,7 @@ router.get('/films/:film_id', function (req, res) {
 
     if (!isNaN(id)) {
         var query_str = {
-            sql: 'SELECT * FROM film WHERE film_id = ?;',
+            sql: 'SELECT * FROM `film` inner join inventory on film.film_id = inventory.film_id inner join rental on rental.inventory_id = inventory.inventory_id where film.film_id = ?;',
             values: [id],
             timeout: 2000
         };
@@ -225,7 +224,9 @@ router.get('/films/:film_id', function (req, res) {
     }
 });
 
-//The following routes require a token, the previous ones do not
+
+//THE FOLLOWING ROUTES REQUIRE A TOKEN, THE PREVIOUS ONES DO NOT
+
 //Check for authentication token
 router.all('*', function (req, res, next) {
     var token = (req.header('X-Access-Token')) || '';
