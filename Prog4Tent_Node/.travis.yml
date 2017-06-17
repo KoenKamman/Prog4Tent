@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- '7'
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8 - g++-4.8
+env:
+- CXX=g++-4.8
+deploy:
+  provider: heroku
+  api_key:
+    secure: "V4XqdmWwWbn8ENk7OEguzQPMV6lr2Rwkmw70hY8xUR1O62codJF2gYyygghVOLW+88+mso52vomi/GaW5G3d7rdbYxiVLs6yUQgWGwynPYTggKS97RVel9OvXtUW2Q9aHNEGBom70BHlB1vOvmHfgHBW8AC9ZoOgVm0n2tTG7L9CEJZRAkdfcOSYf2TD6krlrXhEDUUr1ycAXmNhAQQzVEPz4rU1/pGnR5dZI6hWWWGCPx+rDQiBBRsI7sWelsoAVPgmJxo/8kgIAa73RFPwMUVkm/OSBU8QI8B1suwCmg+tSUt6D+aSXwl0IyBd9Af1/8/WejFkcggHAeli1WsgWtEqeGslwINfCyqEFaq26v606xyGy4gX4eSVVelXy6r9M2l1o/q1UFMy/MID5aVEwRV43XS6yzmjfV2SBZEn1WQRmAEXrS83wGM+IGOjVOzYHmswD57tXnoEMgSaTMGfq3ruLY5ES58PeGZeuHnJpOUZUQyuFlQrGPZBw8dySQBfqhm9BEOTuYsfz+TKiqjrYv/EpcpQqpKw+1GM1gvdPq+B9AZQWB+QB3ouGLUJvdrhb2pVP9AbitAQZqqCaKDISBpSUdKViRkZc1eF9aFqpFHeUk8wMpo+UKeVZdbx/1GuNQQUqhPcA8n9BDIIP9d7855lMG0O39HzSeB95naz+fw="
+  app: tentprog4
