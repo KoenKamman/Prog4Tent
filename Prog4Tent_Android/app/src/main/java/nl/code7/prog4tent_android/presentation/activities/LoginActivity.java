@@ -90,41 +90,44 @@ public class LoginActivity extends AppCompatActivity{
 
                     @Override
                     public void onResponse(String response) {
-
                         String token = " ";
                         String id = "";
-                        //TODO: Rework if statement
-                        if (!response.contains("error") && !response.isEmpty()){
-                            Log.i(TAG, "Response: " + response);
 
-                            //Start activity and put response/token in extras
-                            Intent i = new Intent(getApplicationContext(), FilmActivity.class);
-                            i.putExtra("USERNAME", usernameView.getEditableText().toString());
-                            Customer customer = new Customer();
-                            JSONObject jsonObject = null;
-                            try {
-                                jsonObject = new JSONObject(response);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (jsonObject != null) {
+                            if (!jsonObject.has("error")){
+                                Log.i(TAG, "Response: " + response);
+
+                                //Start activity and put response/token in extras
+                                Intent i = new Intent(getApplicationContext(), FilmActivity.class);
+                                i.putExtra("USERNAME", usernameView.getEditableText().toString());
+                                Customer customer = new Customer();
+
+                                try {
+                                    token = jsonObject.getString("token");
+                                    id = jsonObject.getString("customer_id");
+                                    customer.setCustomer_id(id);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Log.i(TAG, "" + customer.getCustomer_id());
+                                Log.i(TAG, token);
+
+                                i.putExtra("CUSTOMER", customer);
+                                i.putExtra("TOKEN", token);
+                                startActivity(i);
+                                signInButton.setEnabled(true);
+
+                            } else {
+                                Log.e(TAG, "Response: " + response);
                             }
-                            try {
-                                token = jsonObject.getString("token");
-                                id = jsonObject.getString("customer_id");
-                                customer.setCustomer_id(id);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            Log.i(TAG, "" + customer.getCustomer_id());
-                            Log.i(TAG, token);
-
-                            i.putExtra("CUSTOMER", customer);
-                            i.putExtra("TOKEN", token);
-                            startActivity(i);
-                            signInButton.setEnabled(true);
-
-                        } else {
-                            Log.e(TAG, "Response: " + response);
                         }
 
                     }
