@@ -26,7 +26,6 @@ import java.util.Map;
 
 import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.domain.Customer;
-import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 
 /**
  * A login screen that offers login via username/password.
@@ -34,14 +33,12 @@ import nl.code7.prog4tent_android.presentation.fragments.FilmFragment;
 public class LoginActivity extends AppCompatActivity{
 
 
-    private static final String TAG = FilmFragment.class.getName();
+    private static final String TAG = LoginActivity.class.getName();
 
     // UI references.
     private AutoCompleteTextView usernameView;
     private EditText passwordView;
-    private View progressView;
-    private View loginFormView;
-
+    private Button signInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +50,17 @@ public class LoginActivity extends AppCompatActivity{
         passwordView = (EditText) findViewById(R.id.password_EditText);
 
         // Login with existing account
-        Button signInButton = (Button) findViewById(R.id.sign_in_Button);
+        signInButton = (Button) findViewById(R.id.sign_in_Button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Store values at the time of the login attempt.
                 String username = usernameView.getText().toString();
                 String password = passwordView.getText().toString();
-
+                signInButton.setEnabled(false);
                 volleyLogin(username, password);
-
             }
         });
-
-        loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
 
         // Register new account
         Button registerBtn = (Button)findViewById(R.id.register_Button);
@@ -122,12 +115,14 @@ public class LoginActivity extends AppCompatActivity{
                                 e.printStackTrace();
                             }
 
-                            Log.i("JFJ", "" + customer.getCustomer_id());
-                            Log.i("DFD", token);
+                            Log.i(TAG, "" + customer.getCustomer_id());
+                            Log.i(TAG, token);
 
                             i.putExtra("CUSTOMER", customer);
                             i.putExtra("TOKEN", token);
                             startActivity(i);
+                            signInButton.setEnabled(true);
+
                         } else {
                             Log.e(TAG, "Response: " + response);
                         }
@@ -140,6 +135,7 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Something went wrong.");
+                        signInButton.setEnabled(true);
                     }
                 }) {
 
