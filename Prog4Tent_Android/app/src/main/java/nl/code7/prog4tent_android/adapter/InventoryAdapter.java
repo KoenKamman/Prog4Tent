@@ -1,6 +1,7 @@
 package nl.code7.prog4tent_android.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,11 @@ import nl.code7.prog4tent_android.domain.Inventory;
  * Created by Koen Kamman on 17-6-2017.
  */
 
-public class InventoryAdapter extends ArrayAdapter<Inventory>{
+public class InventoryAdapter extends ArrayAdapter<Inventory> {
 
     private static final String TAG = InventoryAdapter.class.getName();
 
-    public InventoryAdapter(Context context, ArrayList<Inventory> films){
+    public InventoryAdapter(Context context, ArrayList<Inventory> films) {
         super(context, 0, films);
     }
 
@@ -29,7 +30,7 @@ public class InventoryAdapter extends ArrayAdapter<Inventory>{
 
         Inventory inventory = getItem(position);
 
-        if (convertview == null){
+        if (convertview == null) {
             convertview = LayoutInflater.from(getContext()).inflate(R.layout.listview_inventory_item_row, parent, false);
         }
 
@@ -38,6 +39,17 @@ public class InventoryAdapter extends ArrayAdapter<Inventory>{
 
         TextView storeId = (TextView) convertview.findViewById(R.id.store_idTV);
         storeId.setText("Store ID: " + inventory.getStore_id());
+
+        Boolean isAvailable = !inventory.getReturn_date().contains("null");
+
+        TextView availabilityTV = (TextView) convertview.findViewById(R.id.availabilityTV);
+        if (isAvailable) {
+            availabilityTV.setText("Available");
+            availabilityTV.setTextColor(Color.rgb(0,255,0));
+        } else {
+            availabilityTV.setText("Unavailable");
+            availabilityTV.setTextColor(Color.rgb(255,0,0));
+        }
 
         return convertview;
 

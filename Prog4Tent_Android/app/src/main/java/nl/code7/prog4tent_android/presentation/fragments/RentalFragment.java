@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -30,6 +32,7 @@ import java.util.Map;
 import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.adapter.RentalAdapter;
 import nl.code7.prog4tent_android.domain.Customer;
+import nl.code7.prog4tent_android.domain.Inventory;
 import nl.code7.prog4tent_android.domain.Rental;
 
 
@@ -40,7 +43,8 @@ public class RentalFragment extends Fragment {
     private ArrayList<Rental> rentalList;
     private RentalAdapter rentalAdapter;
 
-    Customer customer;
+    private Customer customer;
+    private String token;
 
 
     public RentalFragment() {
@@ -49,6 +53,7 @@ public class RentalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         customer = (Customer) getActivity().getIntent().getSerializableExtra("CUSTOMER");
+        token = getActivity().getIntent().getExtras().getString("TOKEN");
         View rootView = inflater.inflate(R.layout.fragment_rental, container, false);
 
         rentalList = new ArrayList<>();
@@ -57,7 +62,7 @@ public class RentalFragment extends Fragment {
         rentalListView.setFastScrollAlwaysVisible(true);
         rentalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 //                Intent i = new Intent(getContext(), RentalDetailActivity.class);
 //                Rental rental = rentalList.get(position);
 //                i.putExtras(getActivity().getIntent().getExtras());
@@ -65,13 +70,12 @@ public class RentalFragment extends Fragment {
 //                i.putExtra("RENTAL", rental);
 //                startActivity(i);
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setTitle("Warning");
+                //alert.setTitle("Warning");
                 alert.setMessage("Do you want to return the film?");
                 alert.setNegativeButton("No",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // TODO Auto-generated method stub
                                 dialog.dismiss();
                             }
                         });
@@ -79,8 +83,8 @@ public class RentalFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // TODO Auto-generated method stub
                                 dialog.dismiss();
+                                volleyReturn(rentalList.get(position));
                             }
                         });
                 alert.show();
@@ -97,7 +101,9 @@ public class RentalFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         //USE 10.0.2.2 INSTEAD OF localhost IF USING AN EMULATOR
-        String url = "https://tentprog4.herokuapp.com/api/v1/rentals/" + customer.getCustomer_id();
+        String url = "https://tentprog4.herokuapp.com/api/v1/rentals/" + customer.getCustomer_id() + "/" + "?current_rentals=true";
+
+        Log.d(TAG, customer.getCustomer_id() + "");
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url,
@@ -105,6 +111,7 @@ public class RentalFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONArray response) {
+                        rentalList.clear();
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject obj = response.getJSONObject(i);
@@ -130,7 +137,7 @@ public class RentalFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Log.e(TAG, "Something went wrong.");
+                        Log.e(TAG, "Something went wrong.");
                     }
                 }) {
 
@@ -148,6 +155,51 @@ public class RentalFragment extends Fragment {
 
         // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest);
+
+    }
+
+    public void volleyReturn(Rental rental) {
+
+        int inventory_id = rental.getInventory_id();
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        //USE 10.0.2.2 INSTEAD OF localhost IF USING AN EMULATOR
+        String url = "http://tentprog4.herokuapp.com/api/v1/rentals/" + customer.getCustomer_id() + "/" + inventory_id;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, response);
+                        volleyRentals();
+                    }
+                },
+
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "Something went wrong.");
+                    }
+                }) {
+
+            //Set headers
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("X-Access-Token", token);
+                return headers;
+            }
+
+        };
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
     }
 }
