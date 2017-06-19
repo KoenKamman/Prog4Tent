@@ -159,7 +159,7 @@ router.get('/customers/:username', function (req, res) {
     });
 });
 
-//Returns film info of multiple films by film_id
+//Returns film info of multiple films
 router.get('/films', function (req, res) {
     var offset = req.query.offset;
     var count = req.query.count;
@@ -198,9 +198,51 @@ router.get('/films', function (req, res) {
 router.get('/films/:film_id', function (req, res) {
     var id = req.params.film_id;
 
+    var inventoryId = req.query.inventory_id;
+
     if (!isNaN(id)) {
+        var query_str;
+        if (!inventoryId) {
+            query_str = {
+                sql: 'SELECT * FROM `film` INNER JOIN inventory on film.film_id = inventory.film_id INNER JOIN rental on rental.inventory_id = inventory.inventory_id where film.film_id = ?;',
+                values: [id],
+                timeout: 2000
+            };
+        } else {
+            query_str = {
+                sql: 'SELECT * FROM `film` INNER JOIN inventory on film.film_id = inventory.film_id INNER JOIN rental on rental.inventory_id = inventory.inventory_id where film.film_id = ? AND inventory.inventory_id = ?;',
+                values: [id, inventoryId],
+                timeout: 2000
+            };
+        }
+
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                console.log(err);
+                res.status(503).json({error: new Error("Service Unavailable").message});
+            }
+            connection.query(query_str, function (err, rows, fields) {
+                connection.release();
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({error: new Error("Internal Server Error").message});
+                }
+                res.status(200).json(rows);
+            });
+        });
+    } else {
+        res.status(400).json({error: new Error("film_id must be a number").message});
+    }
+});
+
+//Returns a list of the last rentals for each inventory_id
+router.get('/films/:film_id/inventory', function (req, res) {
+    var id = req.params.film_id;
+
+    if (!isNaN(id)) {
+
         var query_str = {
-            sql: 'SELECT * FROM `film` inner join inventory on film.film_id = inventory.film_id inner join rental on rental.inventory_id = inventory.inventory_id where film.film_id = ?;',
+            sql: 'SELECT inventory.inventory_id, inventory.store_id, inventory.film_id, rental.return_date FROM inventory INNER JOIN rental on rental.inventory_id = inventory.inventory_id WHERE film_id = ? AND rental_date in (SELECT max(rental_date) FROM rental GROUP BY inventory_id ) order by inventory_id asc;',
             values: [id],
             timeout: 2000
         };
@@ -225,7 +267,7 @@ router.get('/films/:film_id', function (req, res) {
 });
 
 
-//THE FOLLOWING ROUTES REQUIRE A TOKEN, THE PREVIOUS ONES DO NOT
+//THE FOLLOWING ROUTES REQUIRE A TOKEN
 
 //Check for authentication token
 router.all('*', function (req, res, next) {
@@ -245,7 +287,22 @@ router.all('*', function (req, res, next) {
 router.get('/rentals/:customer_id', function (req, res) {
     var customerId = req.params.customer_id;
 
-    var query_str = 'SELECT * FROM `rental` INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE rental.customer_id = ' + customerId;
+    var currentRentals = req.query.current_rentals || "false";
+
+    var query_str;
+    if (currentRentals === "true") {
+        query_str = {
+            sql: 'SELECT * FROM `rental` INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE rental.customer_id = ? AND rental.return_date IS NULL',
+            values: [customerId],
+            timeout: 2000
+        };
+    } else {
+        query_str = {
+            sql: 'SELECT * FROM `rental` INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE rental.customer_id = ?',
+            values: [customerId],
+            timeout: 2000
+        };
+    }
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -273,7 +330,7 @@ router.post('/rentals/:customer_id/:inventory_id', function (req, res) {
     var rentalDate = moment().format('YYYY-MM-DD HH:mm:ss');
 
     //var returnDate = moment().add(1, 'week').format('YYYY-MM-DD HH:mm:ss');
-    var returnDate = req.body.return_date;
+    var returnDate = req.body.return_date || null;
 
     var query_str = {
         sql: 'INSERT INTO `rental`(rental_date, inventory_id, customer_id, return_date, staff_id) VALUES (?,?,?,?,?);',
@@ -303,13 +360,15 @@ router.put('/rentals/:customer_id/:inventory_id', function (req, res) {
     var customerId = req.params.customer_id;
     var inventoryId = req.params.inventory_id;
 
-    var staffId = req.body.staff_id;
-    var rentalDate = req.body.rental_date;
-    var returnDate = req.body.return_date;
+    var curdate = moment().format('YYYY-MM-DD HH:mm:ss');
+
+    var staffId = req.body.staff_id || 0;
+    //var rentalDate = req.body.rental_date;
+    var returnDate = req.body.return_date || curdate;
 
     var query_str = {
-        sql: 'UPDATE `rental` SET rental_date = ?, return_date = ?, staff_id = ? WHERE customer_id = ? AND inventory_id = ?;',
-        values: [rentalDate, returnDate, staffId, customerId, inventoryId],
+        sql: 'UPDATE `rental` SET return_date = ?, staff_id = ? WHERE customer_id = ? AND inventory_id = ?;',
+        values: [returnDate, staffId, customerId, inventoryId],
         timeout: 2000
     };
 
