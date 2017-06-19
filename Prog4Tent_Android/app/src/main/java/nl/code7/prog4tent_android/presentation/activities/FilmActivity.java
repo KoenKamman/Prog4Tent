@@ -94,7 +94,7 @@ public class FilmActivity extends AppCompatActivity {
             mDrawerLayout.closeDrawer(mDrawerList);
 
         } else {
-            Log.e("MainActivity", "Error in creating fragment");
+            Log.e("FilmActivity", "Error in creating fragment");
         }
     }
 

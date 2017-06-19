@@ -27,13 +27,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.code7.prog4tent_android.MainActivity;
 import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.adapter.RentalAdapter;
 import nl.code7.prog4tent_android.domain.Customer;
 import nl.code7.prog4tent_android.domain.Rental;
-import nl.code7.prog4tent_android.presentation.activities.RentalActivity;
-import nl.code7.prog4tent_android.presentation.activities.RentalDetailActivity;
+
 
 public class RentalFragment extends Fragment {
     private static final String TAG = RentalFragment.class.getName();

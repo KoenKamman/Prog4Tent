@@ -88,7 +88,7 @@ public class RentalActivity extends AppCompatActivity {
             mDrawerLayout.closeDrawer(mDrawerList);
 
         } else {
-            Log.e("MainActivity", "Error in creating fragment");
+            Log.e("RentalActivity", "Error in creating fragment");
         }
     }
 

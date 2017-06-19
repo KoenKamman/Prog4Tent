@@ -17,6 +17,7 @@
     <string name="prompt_firstname">First Name </string>
     <string name="prompt_lastname">Last Name</string>
     <string name="prompt_addressid">Address </string>
+    <string name="login">Log in</string>
     <string name="register">Register</string>
     <string name="sign_in">Sign in</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -50,7 +51,7 @@
 
     <string-array name="navigation_drawer_items_array">
         <item>Films</item>
-        <item>Rental</item>
+        <item>Rentals</item>
         <item>Logout</item>
     </string-array>
 </resources>

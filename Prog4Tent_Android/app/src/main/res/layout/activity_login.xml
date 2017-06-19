@@ -11,6 +11,15 @@
     tools:context="nl.code7.prog4tent_android.presentation.activities.LoginActivity">
 
     <!-- Login progress -->
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textAlignment="center"
+        android:textColor="?attr/colorAccent"
+        android:textSize="20sp" />
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
