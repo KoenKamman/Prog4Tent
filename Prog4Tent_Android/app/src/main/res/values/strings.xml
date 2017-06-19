@@ -6,8 +6,8 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="film">Films</string>
-    <string name="film_rental_date">Rental Date</string>
-    <string name="film_rental_period">Rental Period</string>
+    <string name="film_rental_date">Rental Date: </string>
+    <string name="film_rental_period">Rental Period: </string>
 
     <string name="make_new_account">Make new account</string>
     <string name="prompt_email">E-mail</string>
@@ -20,13 +20,12 @@
     <string name="register">Register</string>
     <string name="sign_in">Sign in</string>
     <string name="title_activity_login">LoginActivity</string>
-
-    <string name="available">Avalable: </string>
-    <string name="counter">Counter</string>
+    <string name="euro">€</string>
 
     <!--FILM STRINGS-->
     <string name="film_id">Film ID</string>
     <string name="film_title">Film title</string>
+    <string name="film_cost">Cost</string>
     <string name="film_description">Description</string>
     <string name="film_release_year">Release Year</string>
     <string name="film_language_id">Language ID</string>

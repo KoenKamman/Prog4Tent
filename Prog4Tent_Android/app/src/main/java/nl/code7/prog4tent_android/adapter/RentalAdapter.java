@@ -27,8 +27,8 @@ public class RentalAdapter extends ArrayAdapter<Rental> {
     @Override
     public View getView(int position, View convertview, ViewGroup parent) {
 
-        Rental rental= getItem(position);
-        Film film;
+        Rental rental = getItem(position);
+        //Film film = null;
         if (convertview == null){
             convertview = LayoutInflater.from(getContext()).inflate(R.layout.listview_rental_item_row, parent, false);
         }
@@ -38,7 +38,7 @@ public class RentalAdapter extends ArrayAdapter<Rental> {
         TextView filmRentalDate = (TextView) convertview.findViewById(R.id.rental_date_TV);
         filmRentalDate.setText(rental.getRental_date());
         TextView filmPeriod = (TextView) convertview.findViewById(R.id.rental_period_TV);
-        filmPeriod.setText(rental.getReturn_date());
+        //filmPeriod.setText(film.getRental_duration());
 
 
         return convertview;

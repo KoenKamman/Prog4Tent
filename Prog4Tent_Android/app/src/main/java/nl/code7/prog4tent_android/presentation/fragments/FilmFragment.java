@@ -1,12 +1,15 @@
 package nl.code7.prog4tent_android.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -51,6 +54,7 @@ public class FilmFragment extends Fragment {
         filmList = new ArrayList<>();
 
         filmListView = (ListView) rootView.findViewById(R.id.film_ListView);
+
         filmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -62,7 +66,8 @@ public class FilmFragment extends Fragment {
                 startActivity(i);
             }
         });
-
+        filmListView.setFastScrollEnabled(true);
+        filmListView.setFastScrollAlwaysVisible(true);
         filmAdapter = new FilmAdapter(getContext(), filmList);
         filmListView.setAdapter(filmAdapter);
 
@@ -107,9 +112,9 @@ public class FilmFragment extends Fragment {
                                     film.setOriginal_language_id(0);
                                 }
 
-                                film.setRental_rate(obj.getInt("rental_rate"));
+                                film.setRental_rate(obj.getString("rental_rate"));
                                 film.setLength(obj.getInt("length"));
-                                film.setReplacement_cost(obj.getInt("replacement_cost"));
+                                film.setReplacement_cost(obj.getString("replacement_cost"));
                                 film.setRating(obj.getString("rating"));
                                 film.setSpecial_feature(obj.getString("special_features"));
                                 film.setLast_update(obj.getString("last_update"));

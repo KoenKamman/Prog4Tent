@@ -7,9 +7,8 @@ import java.io.Serializable;
  */
 
 public class Film implements Serializable {
-    private String title, description, rating, special_feature, last_update;
+    private String title, description, rating, special_feature, last_update, rental_rate, replacement_cost;
     private int film_id, release_year, language_id, original_language_id, rental_duration, length;
-    private double rental_rate, replacement_cost;
 
     public String getTitle() {
         return title;
@@ -99,19 +98,19 @@ public class Film implements Serializable {
         this.length = length;
     }
 
-    public double getRental_rate() {
+    public String getRental_rate() {
         return rental_rate;
     }
 
-    public void setRental_rate(double rental_rate) {
+    public void setRental_rate(String rental_rate) {
         this.rental_rate = rental_rate;
     }
 
-    public double getReplacement_cost() {
+    public String getReplacement_cost() {
         return replacement_cost;
     }
 
-    public void setReplacement_cost(double replacement_cost) {
+    public void setReplacement_cost(String replacement_cost) {
         this.replacement_cost = replacement_cost;
     }
 }

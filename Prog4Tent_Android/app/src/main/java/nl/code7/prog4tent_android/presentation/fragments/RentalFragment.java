@@ -1,8 +1,10 @@
 package nl.code7.prog4tent_android.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.code7.prog4tent_android.MainActivity;
 import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.adapter.RentalAdapter;
 import nl.code7.prog4tent_android.domain.Customer;
@@ -51,16 +54,38 @@ public class RentalFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_rental, container, false);
 
         rentalList = new ArrayList<>();
-        rentalListView= (ListView) rootView.findViewById(R.id.rental_ListView);
+        rentalListView = (ListView) rootView.findViewById(R.id.rental_ListView);
+        rentalListView.setFastScrollEnabled(true);
+        rentalListView.setFastScrollAlwaysVisible(true);
         rentalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getContext(), RentalDetailActivity.class);
-                Rental rental = rentalList.get(position);
-                i.putExtras(getActivity().getIntent().getExtras());
-                i.putExtra("POSITION", position);
-                i.putExtra("RENTAL", rental);
-                startActivity(i);
+//                Intent i = new Intent(getContext(), RentalDetailActivity.class);
+//                Rental rental = rentalList.get(position);
+//                i.putExtras(getActivity().getIntent().getExtras());
+//                i.putExtra("POSITION", position);
+//                i.putExtra("RENTAL", rental);
+//                startActivity(i);
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Warning");
+                alert.setMessage("Do you want to return the film?");
+                alert.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                dialog.dismiss();
+                            }
+                        });
+                alert.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                dialog.dismiss();
+                            }
+                        });
+                alert.show();
             }
         });
         rentalAdapter = new RentalAdapter(getContext(), rentalList);

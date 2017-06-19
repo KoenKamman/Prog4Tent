@@ -1,6 +1,9 @@
 package nl.code7.prog4tent_android.presentation.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,14 +51,32 @@ public class InventoryActivity extends AppCompatActivity {
         inventoryList = new ArrayList<>();
 
         inventoryListView = (ListView) findViewById(R.id.inventoryLV);
+        inventoryListView.setFastScrollEnabled(true);
+        inventoryListView.setFastScrollAlwaysVisible(true);
         inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(view.getContext(), FilmDetailActivity.class);
-                Inventory inv = inventoryList.get(position);
-                i.putExtras(getIntent().getExtras());
-                i.putExtra("INVENTORY", inv);
-                startActivity(i);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(InventoryActivity.this);
+                alert.setTitle("Warning");
+                alert.setMessage("Do you want to rent this film?");
+                alert.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                dialog.dismiss();
+                            }
+                        });
+                alert.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                dialog.dismiss();
+                            }
+                        });
+                alert.show();
             }
         });
 
