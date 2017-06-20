@@ -1,6 +1,8 @@
 package nl.code7.prog4tent_android.presentation.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -138,9 +140,37 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Something went wrong.");
-                        signInButton.setEnabled(true);
+
+                        if (usernameView.getText().toString().equals("") || passwordView.getText().toString().equals("")) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+                            alert.setMessage("Username or password is empty");
+                            alert.setNeutralButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alert.show();
+                            signInButton.setEnabled(true);
+
+                        }else{
+                            AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+                            alert.setMessage("Wrong username or password");
+                            alert.setNeutralButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alert.show();
+                            signInButton.setEnabled(true);
+                        }
+
                     }
-                }) {
+                })
+        {
 
             //Set headers
             @Override
