@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Programmeren 4 Tentamen</string>
+    <string name="app_name">ProgTent4</string>
     <!-- LOGIN& REGISTER STRINGS-->
     <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

@@ -58,17 +58,9 @@ public class RentalFragment extends Fragment {
 
         rentalList = new ArrayList<>();
         rentalListView = (ListView) rootView.findViewById(R.id.rental_ListView);
-        rentalListView.setFastScrollEnabled(true);
-        rentalListView.setFastScrollAlwaysVisible(true);
         rentalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-//                Intent i = new Intent(getContext(), RentalDetailActivity.class);
-//                Rental rental = rentalList.get(position);
-//                i.putExtras(getActivity().getIntent().getExtras());
-//                i.putExtra("POSITION", position);
-//                i.putExtra("RENTAL", rental);
-//                startActivity(i);
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 //alert.setTitle("Warning");
                 alert.setMessage("Do you want to return the film?");
