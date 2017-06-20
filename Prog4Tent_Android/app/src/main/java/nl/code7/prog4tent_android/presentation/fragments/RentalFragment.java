@@ -58,8 +58,6 @@ public class RentalFragment extends Fragment {
 
         rentalList = new ArrayList<>();
         rentalListView = (ListView) rootView.findViewById(R.id.rental_ListView);
-        rentalListView.setFastScrollEnabled(true);
-        rentalListView.setFastScrollAlwaysVisible(true);
         rentalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {

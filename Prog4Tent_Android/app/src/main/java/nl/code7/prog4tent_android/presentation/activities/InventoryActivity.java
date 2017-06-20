@@ -62,8 +62,6 @@ public class InventoryActivity extends AppCompatActivity {
         inventoryList = new ArrayList<>();
 
         inventoryListView = (ListView) findViewById(R.id.inventoryLV);
-        inventoryListView.setFastScrollEnabled(true);
-        inventoryListView.setFastScrollAlwaysVisible(true);
         inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
