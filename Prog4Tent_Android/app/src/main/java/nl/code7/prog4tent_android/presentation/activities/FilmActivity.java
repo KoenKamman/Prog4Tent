@@ -131,5 +131,9 @@ public class FilmActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 
 }

@@ -1,15 +1,12 @@
 package nl.code7.prog4tent_android.presentation.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -31,8 +28,6 @@ import java.util.Map;
 import nl.code7.prog4tent_android.R;
 import nl.code7.prog4tent_android.adapter.FilmAdapter;
 import nl.code7.prog4tent_android.domain.Film;
-import nl.code7.prog4tent_android.presentation.activities.FilmActivity;
-import nl.code7.prog4tent_android.presentation.activities.FilmDetailActivity;
 import nl.code7.prog4tent_android.presentation.activities.InventoryActivity;
 
 public class FilmFragment extends Fragment {
