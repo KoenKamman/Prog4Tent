@@ -33,10 +33,18 @@ public class RentalAdapter extends ArrayAdapter<Rental> {
             convertview = LayoutInflater.from(getContext()).inflate(R.layout.listview_rental_item_row, parent, false);
         }
 
+        String rentalDate = rental.getRental_date();
+
+        int spaceIndex = rentalDate.indexOf("T");
+        if (spaceIndex != -1)
+        {
+            rentalDate = rentalDate.substring(0, spaceIndex);
+        }
+
         TextView filmName = (TextView) convertview.findViewById(R.id.rental_item_TextView);
         filmName.setText(rental.getTitle());
         TextView filmRentalDate = (TextView) convertview.findViewById(R.id.rental_date_TV);
-        filmRentalDate.setText(rental.getRental_date());
+        filmRentalDate.setText(rentalDate);
         TextView filmPeriod = (TextView) convertview.findViewById(R.id.rental_period_TV);
         //filmPeriod.setText(film.getRental_duration());
 
