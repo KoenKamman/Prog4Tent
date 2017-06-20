@@ -115,6 +115,7 @@ public class RentalFragment extends Fragment {
                                 rental.setReturn_date(obj.getString("return_date"));
                                 rental.setStaff_id(obj.getInt("staff_id"));
                                 rental.setLast_update(obj.getString("last_update"));
+                                rental.setRental_duration(obj.getString("rental_duration"));
                                 rentalList.add(rental);
                             }
                         } catch (JSONException e) {
