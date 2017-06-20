@@ -62,11 +62,14 @@ public class InventoryActivity extends AppCompatActivity {
         inventoryList = new ArrayList<>();
 
         inventoryListView = (ListView) findViewById(R.id.inventoryLV);
+        inventoryListView.setFastScrollEnabled(true);
+        inventoryListView.setFastScrollAlwaysVisible(true);
         inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(InventoryActivity.this);
+                //alert.setTitle("Warning");
                 Boolean available = !inventoryList.get(position).getReturn_date().contains("null");
                 if (available) {
                     alert.setMessage("Do you want to rent this film?");
