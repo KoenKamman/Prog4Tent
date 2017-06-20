@@ -88,6 +88,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/register" />
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Koen Kanman & Whitney Cheung | 23IVT1C"
+                android:textAlignment="center" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
