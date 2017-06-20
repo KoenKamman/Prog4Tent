@@ -7,7 +7,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="film">Films</string>
     <string name="film_rental_date">Rental Date: </string>
-    <string name="film_rental_period">Rental Period: </string>
+    <string name="film_rental_period">Return On: </string>
 
     <string name="make_new_account">Make new account</string>
     <string name="prompt_email">E-mail</string>
