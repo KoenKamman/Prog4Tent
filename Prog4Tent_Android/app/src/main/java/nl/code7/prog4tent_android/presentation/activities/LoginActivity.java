@@ -141,32 +141,21 @@ public class LoginActivity extends AppCompatActivity{
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG, "Something went wrong.");
 
+                        AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
                         if (usernameView.getText().toString().equals("") || passwordView.getText().toString().equals("")) {
-                            AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
                             alert.setMessage("Username or password is empty");
-                            alert.setNeutralButton("Ok",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            alert.show();
-                            signInButton.setEnabled(true);
-
-                        }else{
-                            AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+                        }else {
                             alert.setMessage("Wrong username or password");
-                            alert.setNeutralButton("Ok",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            alert.show();
-                            signInButton.setEnabled(true);
                         }
+                        alert.setNeutralButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alert.show();
+                        signInButton.setEnabled(true);
 
                     }
                 })
