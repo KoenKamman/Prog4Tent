@@ -125,4 +125,7 @@ public class RentalActivity extends AppCompatActivity {
         //This is necessary to change the icon of the Drawer Toggle upon state change.
         mDrawerToggle.syncState();
     }
+    @Override
+    public void onBackPressed() {
+    }
 }
